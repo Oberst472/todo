@@ -4,8 +4,8 @@
             <div class="section-items__item-header">
                 <span class="section-items__item-count">{{ index }}</span>
                 <h2 class="section-items__item-title">Заголовок пункта списка дел</h2>
-                <button class="section-items__item-btn">Удалить</button>
-                <button>Редактировать</button>
+                <UiBtn class="section-items__item-btn" theme="positive" size="small">Редактировать</UiBtn>
+                <UiBtn class="section-items__item-btn" theme="negative" size="small">Удалить</UiBtn>
             </div>
 
             <ul class="section-items__item-short">
@@ -50,7 +50,9 @@
             &-title {
                 margin-right: auto;
             }
-            &-btn {}
+            &-btn {
+                margin-left: $gutter / 2;
+            }
 
 
             &-short {
