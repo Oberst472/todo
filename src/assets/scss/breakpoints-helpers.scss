@@ -1,6 +1,5 @@
 .dev {
     &:before {
-        font-family: $family--default;
         content: 'xs';
         position: fixed;
         bottom: 20px;
@@ -11,6 +10,7 @@
         align-items: center;
         width: 40px;
         height: 30px;
+        font-family: $family--default;
         color: white;
         font-weight: 700;
         border-radius: 10px;

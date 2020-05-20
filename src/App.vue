@@ -1,9 +1,9 @@
 <template>
-  <div id="app">
-    <header>
-      <SectionHeader/>
-    </header>
-  </div>
+    <div id="app" class="main">
+        <header>
+            <SectionHeader/>
+        </header>
+    </div>
 </template>
 
 <script>
