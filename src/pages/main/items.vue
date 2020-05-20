@@ -5,7 +5,7 @@
                 <span class="section-items__item-count">{{ index + 1 }}</span>
                 <h2 class="section-items__item-title">{{ item.title }}</h2>
                 <UiBtn class="section-items__item-btn" theme="info" size="small">Редактировать</UiBtn>
-                <UiBtn class="section-items__item-btn" theme="negative" size="small">Удалить</UiBtn>
+                <UiBtn class="section-items__item-btn" theme="negative" size="small" confirm="Вы уверены?" confirm-position="left">Удалить</UiBtn>
             </div>
 
             <ul class="section-items__item-short" v-if="item.items.length">
