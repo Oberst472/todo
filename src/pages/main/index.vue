@@ -1,6 +1,8 @@
 <template>
-    <div>
-        main
+    <div class="view-main">
+        <div class="wrap">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid atque commodi consequatur dicta earum est excepturi hic ipsam maxime minus nam necessitatibus, nostrum omnis porro possimus, quaerat ratione soluta totam.
+        </div>
     </div>
 </template>
 

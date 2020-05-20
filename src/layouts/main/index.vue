@@ -19,5 +19,8 @@
 </script>
 
 <style scoped lang="scss">
-
+.layout-main {
+    background-color: $color--base;
+    width: 100%;
+}
 </style>

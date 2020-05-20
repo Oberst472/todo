@@ -1,9 +1,9 @@
 <template>
-    <div class="wrap">
-        <section class="section-header">
-            Поехали=)
-        </section>
-    </div>
+    <section class="section-header">
+        <div class="wrap">
+            <div class="section-header__logo">Список дел</div>
+        </div>
+    </section>
 </template>
 
 <script>
@@ -12,6 +12,7 @@ export default {}
 
 <style lang="scss" scoped>
     .section-header {
+        background-color: $color--primary;
         @include adaptiveFont(15px, 33px);
     }
 </style>
