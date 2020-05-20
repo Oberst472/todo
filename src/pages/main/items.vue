@@ -1,24 +1,33 @@
 <template>
     <ul class="section-items">
-        <li class="section-items__item" v-for="(item, index) in 8" :key="index">
+        <li :key="item.id" class="section-items__item" v-for="(item, index) in items">
             <div class="section-items__item-header">
                 <span class="section-items__item-count">{{ index + 1 }}</span>
-                <h2 class="section-items__item-title">Заголовок пункта списка дел</h2>
+                <h2 class="section-items__item-title">{{ item.title }}</h2>
                 <UiBtn class="section-items__item-btn" theme="info" size="small">Редактировать</UiBtn>
                 <UiBtn class="section-items__item-btn" theme="negative" size="small">Удалить</UiBtn>
             </div>
 
-            <ul class="section-items__item-short">
-                <li class="section-items__item-short-item">Lorem ipsum dolor sit amet, consectetur.</li>
-                <li class="section-items__item-short-item">Lorem ipsum dolor sit amet, consectetur.</li>
-                <li class="section-items__item-short-item">Lorem ipsum dolor sit amet, consectetur.</li>
+            <ul class="section-items__item-short" v-if="item.items.length">
+                <li class="section-items__item-short-item" v-if="item.items[0].title">{{ item.items[0].title }}</li>
+                <li class="section-items__item-short-item" v-if="item.items[0].title">{{ item.items[1].title }}</li>
+                <li class="section-items__item-short-item" v-if="item.items[0].title">{{ item.items[2].title }}</li>
             </ul>
+            <span v-else>В этой заметке ничего нет :(</span>
         </li>
     </ul>
 </template>
 
 <script>
-    export default {}
+    export default {
+        props: {
+            items: {
+                type: Array,
+                default: () => {
+                }
+            }
+        }
+    }
 </script>
 
 <style scoped lang="scss">
@@ -32,10 +41,10 @@
         @include listReset;
 
         &__item {
-            background-color: $color--primary;
             position: relative;
-            border-radius: $gutter / 3;
             padding: $gutter / 3;
+            border-radius: $gutter / 3;
+            background-color: $color--primary;
             overflow: hidden;
             @include md() {
                 padding: $gutter / 2;
@@ -43,6 +52,7 @@
             @include lg() {
                 padding: $gutter;
             }
+
             &-header {
                 display: flex;
                 @include md() {
@@ -51,6 +61,7 @@
                     align-items: center;
                 }
             }
+
             &-count {
                 margin-right: $gutter / 2;
                 position: absolute;
@@ -68,9 +79,11 @@
 
                 border-bottom-right-radius: $gutter / 2;
             }
+
             &-title {
                 margin-right: auto;
             }
+
             &-btn {
                 margin-left: $gutter / 2;
             }
@@ -85,9 +98,11 @@
                 &-item {
                 }
             }
+
             & + & {
                 margin-top: $gutter;
             }
+
             &:before {
                 content: '';
                 position: absolute;
