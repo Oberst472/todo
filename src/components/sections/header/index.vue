@@ -1,7 +1,10 @@
 <template>
     <section class="section-header">
         <div class="wrap">
-            <div class="section-header__logo">Список дел</div>
+            <div class="section-header__content">
+                <h1 class="section-header__title">Все заметки</h1>
+                <UiBtn class="section-header__btn" theme="positive" size="medium">Добавить</UiBtn>
+            </div>
         </div>
     </section>
 </template>
@@ -12,7 +15,17 @@ export default {}
 
 <style lang="scss" scoped>
     .section-header {
-        background-color: $color--primary;
-        @include adaptiveFont(15px, 33px);
+        background-color: darken($color--primary, 5%);
+        &__title {
+            @include adaptiveFont(15px, 33px);
+            margin: 0;
+        }
+        &__content {
+            display: flex;
+            @include md() {
+                padding: $gutter / 2 0;
+                justify-content: space-between;
+            }
+        }
     }
 </style>

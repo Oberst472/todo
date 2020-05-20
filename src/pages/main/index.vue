@@ -1,7 +1,6 @@
 <template>
     <div class="view-main">
         <div class="wrap">
-            <h1 class="view-main-title">Все заметки</h1>
             <SectionItems/>
         </div>
     </div>
@@ -17,5 +16,7 @@
 </script>
 
 <style scoped lang="scss">
-
+.view-main {
+    padding: $gutter * 2 0;
+}
 </style>

@@ -97,6 +97,15 @@
                 }
             }
 
+            &-info {
+                color: $color--text-light;
+                background-color: $color--info;
+
+                &:hover {
+                    background-color: darken($color--info, 10%);
+                }
+            }
+
             &-positive {
                 color: $color--text-light;
                 background-color: $color--positive;

@@ -1,9 +1,9 @@
 <template>
     <div class="layout-main">
-        <header class="layout-header">
+        <header class="layout-main__header">
             <SectionHeader/>
         </header>
-        <main class="layout-main">
+        <main class="layout-main__body">
             <router-view/>
         </main>
     </div>
@@ -21,6 +21,11 @@
 <style scoped lang="scss">
 .layout-main {
     background-color: $color--base;
-    width: 100%;
+    min-width: 100%;
+    &__header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
 }
 </style>
