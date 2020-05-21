@@ -23,7 +23,7 @@
 <style lang="scss" scoped>
     .ui-checkbox {
         position: relative;
-
+display: inline-flex;
         width: 20px;
         height: 20px;
         border-radius: 3px;

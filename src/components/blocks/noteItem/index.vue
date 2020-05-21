@@ -24,6 +24,14 @@
             checkbox: {
                 type: Boolean,
                 default: false
+            },
+            checked: {
+                type: Boolean,
+                default: false
+            },
+            value: {
+                type: String,
+                default: ''
             }
         },
         data() {
@@ -49,6 +57,10 @@
                 },
                 deep: true
             }
+        },
+        mounted() {
+            this.info.isChecked = this.checked
+            this.info.value = this.value
         }
     }
 </script>

@@ -1,4 +1,5 @@
-import { apiCreateTodo } from '@/api/api'
+// eslint-disable-next-line no-unused-vars
+import { apiCreateTodo, apiDeleteTodo } from '@/api/api'
 import {randomString} from '@/utils/randomString'
 export default {
     namespaced: true,
@@ -46,14 +47,26 @@ export default {
         stRemoveNote({commit}, index) {
             commit('setItemsDecrement', index)
         },
-        save({state}) {
+        async save({state, commit}) {
+            commit('setIsLoading', true)
             const info = {
                 id: randomString(6),
                 title: state.title,
                 items: state.items
 
             }
-            apiCreateTodo(info)
+            const data = await apiCreateTodo(info)
+            commit('setIsLoading', false)
+            return Boolean(data)
+        },
+        // eslint-disable-next-line no-unused-vars,require-await
+        async remove({commit, dispatch}, id) {
+            commit('setIsLoading', true)
+            const data = await apiDeleteTodo(id)
+            commit('setIsLoading', false)
+            dispatch('main/stGetAllTodo', null, {root: true})
+            console.log(dispatch)
+            return Boolean(data)
         }
     }
 }

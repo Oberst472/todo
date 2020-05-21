@@ -14,6 +14,11 @@ export default {
             state.items = items
         }
     },
+    getters: {
+        getItems(state) {
+            return state.items.reverse()
+        }
+    },
     actions: {
         //получить все тудушки
         async stGetAllTodo({ commit }) {

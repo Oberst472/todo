@@ -17,3 +17,9 @@ export const apiCreateTodo = async function(info) {
     const [data] = await Promise.all([customFetch('post', `${baseUrl}/create/`, info)])
     return data
 }
+
+export const apiDeleteTodo = async function(id) {
+    await timeout(2000)
+    const [data] = await Promise.all([customFetch('delete', `${baseUrl}/delete/${id}`, null)])
+    return data
+}

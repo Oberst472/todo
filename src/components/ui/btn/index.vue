@@ -11,7 +11,7 @@
             class="ui-btn__item"
         >
             <span class="ui-btn__item-loading" v-if="loading"></span>
-            <span class="ui-btn__item-value" v-else><slot/></span>
+            <span class="ui-btn__item-value"><slot/></span>
         </component>
         <transition name="fade">
             <span class="ui-btn__confirm" v-if="confirm && isConfirmActive">
@@ -171,7 +171,9 @@
             }
 
             &--loading {
-                font-size: 0;
+                .ui-btn__item-value {
+                    opacity: 0;
+                }
                 opacity: 0.7;
                 pointer-events: none;
             }
@@ -181,7 +183,7 @@
             }
 
             &-loading {
-                position: relative;
+                position: absolute;
                 display: flex;
                 justify-content: center;
                 align-items: center;

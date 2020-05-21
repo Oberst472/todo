@@ -9,7 +9,7 @@
 
                 <div class="section-header__options" v-if="$route.name === 'addNewTodo'">
                     <UiBtn class="section-header__btn" theme="positive" size="medium" @click="stCreateEmptyNote">Создать новую заметку</UiBtn>
-                    <UiBtn class="section-header__btn" theme="positive" size="medium" @click="save">Сохранить</UiBtn>
+                    <UiBtn class="section-header__btn" theme="positive" size="medium" @click="saveTodo" :loading="isLoading">Сохранить</UiBtn>
                 </div>
             </div>
         </div>
@@ -17,10 +17,25 @@
 </template>
 
 <script>
-    import {mapActions} from 'vuex'
+    import {mapState, mapActions} from 'vuex'
 export default {
+        computed: {
+            ...mapState('addNewTodo', ['isLoading'])
+        },
         methods: {
-            ...mapActions('addNewTodo', ['stCreateEmptyNote', 'save'])
+            ...mapActions('addNewTodo', ['stCreateEmptyNote', 'save']),
+            ...mapActions('message', ['message']),
+            async saveTodo() {
+                const data = await this.save()
+                if (data) {
+
+                    this.message(['positive', 'Новый Todo добавлен'])
+                    this.$router.push({name: 'main'})
+                }
+                else {
+                    this.message(['negative', 'Ошибка, попробуйте еще раз'])
+                }
+            }
         }
 }
 </script>

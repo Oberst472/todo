@@ -5,21 +5,24 @@
                 <span class="section-items__item-count">{{ index + 1 }}</span>
                 <h2 class="section-items__item-title">{{ item.title }}</h2>
                 <UiBtn class="section-items__item-btn" theme="info" size="small">Редактировать</UiBtn>
-                <UiBtn class="section-items__item-btn" theme="negative" size="small" confirm="Вы уверены?" confirm-position="left">Удалить</UiBtn>
+                <UiBtn class="section-items__item-btn" theme="negative" size="small" confirm="Вы уверены?" confirm-position="left" @click="$emit('removeTodo', item.id)">Удалить</UiBtn>
             </div>
 
             <ul class="section-items__item-short" v-if="item.items.length">
-                <li class="section-items__item-short-item" v-if="item.items[0].title">{{ item.items[0].title }}</li>
-                <li class="section-items__item-short-item" v-if="item.items[0].title">{{ item.items[1].title }}</li>
-                <li class="section-items__item-short-item" v-if="item.items[0].title">{{ item.items[2].title }}</li>
+                <li class="section-items__item-short-item" v-for="(item, index) in item.items" :key="index">
+                    <UiCheckbox class="section-items__item-short-checkbox" v-model="item.isChecked"/>
+                    {{ item.value }}
+                </li>
             </ul>
-            <span v-else>В этой заметке ничего нет :(</span>
+            <div class="section-items__item-text" v-else>В этой заметке ничего нет :(</div>
         </li>
     </ul>
 </template>
 
 <script>
     export default {
+        components: {
+        },
         props: {
             items: {
                 type: Array,
@@ -40,6 +43,7 @@
             border-radius: $gutter / 3;
             background-color: $color--primary;
             overflow: hidden;
+            min-height: 130px;
             @include md() {
                 padding: $gutter / 2;
             }
@@ -90,7 +94,18 @@
                 align-items: flex-start;
 
                 &-item {
+                    display: flex;
+                    margin-bottom: $gutter / 6;
+                    &:nth-of-type(3n) {
+                        display: none;
+                    }
                 }
+                &-checkbox {
+                    margin-right: 10px;
+                }
+            }
+            &-text {
+                text-align: left;
             }
 
             & + & {
@@ -104,6 +119,7 @@
                 bottom: 0;
                 width: 100%;
                 height: 70%;
+                z-index: 2;
                 background-image: linear-gradient(to top, $color--primary, transparent);
             }
         }

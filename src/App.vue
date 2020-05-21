@@ -1,6 +1,7 @@
 <template>
     <div id="app" class="main">
         <router-view/>
+        <UiMessage class="view-main__message"/>
     </div>
 </template>
 

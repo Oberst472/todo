@@ -1,22 +1,23 @@
 <template>
     <div class="view-main">
         <div class="wrap">
-            <SectionItems :items="items"/>
+            <SectionItems :items="getItems" @removeTodo="remove($event)"/>
         </div>
     </div>
 </template>
 <script>
-    import {mapState, mapActions} from 'vuex'
+    import {mapGetters, mapActions} from 'vuex'
     import SectionItems from './items'
     export default {
         components: {
             SectionItems
         },
         computed: {
-            ...mapState('main', ['items'])
+            ...mapGetters('main', ['getItems'])
         },
         methods: {
-            ...mapActions('main', ['stGetAllTodo'])
+            ...mapActions('main', ['stGetAllTodo']),
+            ...mapActions('todo', ['remove'])
         },
         mounted() {
             this.stGetAllTodo()
