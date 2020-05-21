@@ -31,12 +31,6 @@
 </script>
 
 <style scoped lang="scss">
-    @mixin listReset {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-    }
-
     .section-items {
         @include listReset;
 

@@ -15,6 +15,13 @@ export default new VueRouter({
                     components: {
                         default: require('./pages/main').default
                     }
+                },
+                {
+                    path: '/add',
+                    name: 'addNewTodo',
+                    components: {
+                        default: require('./pages/addNewTodo').default
+                    }
                 }
             ]
         }

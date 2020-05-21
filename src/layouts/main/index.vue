@@ -20,12 +20,16 @@
 
 <style scoped lang="scss">
 .layout-main {
-    background-color: $color--base;
-    min-width: 100%;
+    width: 100%;
+    min-height: 100%;
     &__header {
         position: sticky;
         top: 0;
         z-index: 10;
+    }
+    &__body {
+        min-height: 100%;
+        background-color: $color--base;
     }
 }
 </style>

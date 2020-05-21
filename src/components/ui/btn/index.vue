@@ -57,6 +57,10 @@
             confirmPosition: {
                 type: String,
                 default: 'bottom'
+            },
+            circle: {
+                type: Boolean,
+                default: false
             }
         },
         data() {
@@ -69,7 +73,8 @@
                 return {
                     'ui-btn__item--disabled': this.disabled,
                     'ui-btn__item--loading': this.loading,
-                    [`ui-btn__item--theme-${this.theme}`]: true
+                    [`ui-btn__item--theme-${this.theme}`]: true,
+                    [`ui-btn__item--circle`]: this.circle
                 }
             },
             btnClasses() {
@@ -214,10 +219,13 @@
             &-text {
                 width: 100%;
                 margin-bottom: 10px;
+                text-align: center;
             }
 
             &-btn {
                 box-sizing: border-box;
+                display: inline-flex;
+                justify-content: center;
                 width: 45%;
                 padding: 5px;
                 border-radius: 5px;
@@ -228,7 +236,7 @@
                 color: $color--text-light;
 
                 &:hover {
-                    background-color: darken($color--primary, 15%);
+                    background-color: darken($color--positive, 15%);
                 }
 
                 &:active {

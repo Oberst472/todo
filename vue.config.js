@@ -14,7 +14,8 @@ function addStyleResource(rule) {
     .options({
       patterns: [
         path.resolve(__dirname, './src/assets/scss/vars.scss'),
-        path.resolve(__dirname, './src/assets/scss/adaptive.scss')
+        path.resolve(__dirname, './src/assets/scss/adaptive.scss'),
+        path.resolve(__dirname, './src/assets/scss/mixins.scss')
       ]
     })
 }

@@ -3,7 +3,7 @@
         <div class="wrap">
             <div class="section-header__content">
                 <h1 class="section-header__title">Все заметки</h1>
-                <UiBtn class="section-header__btn" theme="positive" size="medium">Добавить</UiBtn>
+                <UiBtn class="section-header__btn" theme="positive" size="medium" :to="{name: 'addNewTodo'}">Добавить</UiBtn>
             </div>
         </div>
     </section>
