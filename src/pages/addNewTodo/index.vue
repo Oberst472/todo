@@ -5,18 +5,22 @@
                 <div class="page-todo-item__title">
                     <UiInput class="page-todo-item__title-inp"/>
                 </div>
-                <transition-group name="list" tag="ul" class="page-todo-item__list" v-if="items.length">
-                    <li class="page-todo-item__list-item" v-for="(item, index) in items" :key="`item-${item.value}`">
-                        <BlockNoteItem checkbox @input="addInfo({index, info: $event})" @delete="delItem(index)"/>
+                <transition-group name="list-complete" tag="ul" class="page-todo-item__list" v-if="items.length">
+                    <li class="page-todo-item__list-item" v-for="(item, index) in items" :key="item.id">
+                        <BlockNoteItem
+                            checkbox
+                            @input="stAddInfoToNote({index, info: $event})"
+                            @delete="stRemoveNote(index)"
+                        />
                     </li>
                 </transition-group>
-                <UiBtn size="medium" theme="info" @click="addItem">Добавить пункт</UiBtn>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    import {mapState, mapActions} from 'vuex'
     import BlockNoteItem from '@/components/blocks/noteItem';
     export default {
         components: {
@@ -24,24 +28,14 @@
         },
         data() {
             return {
-                title: '',
-                items: []
+                title: ''
             }
         },
+        computed: {
+            ...mapState('addNewTodo', ['items'])
+        },
         methods: {
-            addItem() {
-                const newItem = {
-                    isChecked: false,
-                    value: ''
-                }
-                this.items.push(newItem)
-            },
-            addInfo(val) {
-                this.items.splice(val.index, 1, val.info)
-            },
-            delItem(index) {
-                this.items.splice(index, 1)
-            }
+            ...mapActions('addNewTodo', ['stRemoveNote', 'stAddInfoToNote'])
         }
     }
 </script>
@@ -49,7 +43,7 @@
 <style scoped lang="scss">
 .page-todo-item {
     &__title {
-        padding: $gutter * 2 0;
+        padding: $gutter 0 $gutter * 2 0;
         display: flex;
         justify-content: center;
         &-inp {
@@ -60,21 +54,29 @@
     }
     &__list {
         @include listReset;
+        position: relative;
         &-item {
             text-align: left;
-            font-size: 14px;
-            border-radius: $gutter / 3;
-            background-color: $color--primary;
-            padding: $gutter / 3;
+            font-size: 16px;
             margin-bottom: $gutter / 2;
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            transition-duration: 1s;
         }
     }
-    .list-enter-active, .list-leave-active {
-        transition: all 1s;
-    }
-    .list-enter, .list-leave-to /* .list-leave-active до версии 2.1.8 */ {
+
+    .list-complete-enter, .list-complete-leave-to
+        /* .list-complete-leave-active до версии 2.1.8 */ {
         opacity: 0;
         transform: translateY(30px);
+        transition-duration: 0.3s;
+        /deep/ .ui-btn__confirm {
+            opacity: 0;
+        }
+    }
+    .list-complete-leave-active {
+        position: absolute;
     }
 }
 </style>

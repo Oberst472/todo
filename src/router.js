@@ -14,6 +14,9 @@ export default new VueRouter({
                     name: 'main',
                     components: {
                         default: require('./pages/main').default
+                    },
+                    meta: {
+                        title: `Все списки дел`
                     }
                 },
                 {
@@ -21,6 +24,9 @@ export default new VueRouter({
                     name: 'addNewTodo',
                     components: {
                         default: require('./pages/addNewTodo').default
+                    },
+                    meta: {
+                        title: `Новый список`
                     }
                 }
             ]

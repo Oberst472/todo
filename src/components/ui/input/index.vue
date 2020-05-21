@@ -2,7 +2,7 @@
     <label class="ui-input">
         <input
             class="ui-input__inp"
-            placeholder="Введите название заметки"
+            placeholder="Введите название списка"
             type="text" :value="value"
             @input="$emit('input', $event.target.value)">
     </label>

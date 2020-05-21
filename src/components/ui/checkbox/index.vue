@@ -1,5 +1,5 @@
 <template>
-    <label class="ui-checkbox">
+    <label class="ui-checkbox" :class="{'ui-checkbox--checked': checked}">
         <input class="ui-checkbox__inp" :checked="checked" @change="$emit('change', $event.target.checked)" type="checkbox">
         <span class="ui-checkbox__mark"></span>
     </label>
