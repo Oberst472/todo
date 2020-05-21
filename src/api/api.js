@@ -13,14 +13,20 @@ export const apiAllTodo = async function() {
 }
 
 export const apiCreateTodo = async function(info) {
-    await timeout(300)
+    await timeout(100)
     const [data] = await Promise.all([customFetch('post', `${baseUrl}/create/`, info)])
     return data
 }
 
+export const apiEditTodo = async function(info) {
+    await timeout(100)
+    const [data] = await Promise.all([customFetch('patch', `${baseUrl}/${info.id}`, info)])
+    return data
+}
+
 export const apiDeleteTodo = async function(id) {
-    await timeout(300)
-    const [data] = await Promise.all([customFetch('delete', `${baseUrl}/delete/${id}`, null)])
+    await timeout(100)
+    const [data] = await Promise.all([customFetch('delete', `${baseUrl}/${id}`, null)])
     return data
 }
 export const stApiGetTodoById = async function(id) {

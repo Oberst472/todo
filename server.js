@@ -15,91 +15,110 @@ app.use(function(req, res, next) {
     next()
 })
 
-app.get('/api/allTodo', (req, res) => {
-    let filePath = path.join(__dirname, './src/mocks/', 'items.json')
-
-    async function readFile(path) {
-        try {
-            const data = await fs.promises.readFile(path, 'utf8')
-            res.status(200).json({message: 'Все элементы получены', data: JSON.parse(data), isSuccess: true})
-        } catch (e) {
-            console.log(e)
-            res.status(404).json({message: 'Список не поучен', isSuccess: false})
-        }
+const filePath = path.join(__dirname, './src/mocks/', 'items.json')
+const readFile = async path => {
+    try {
+        const response = await fs.promises.readFile(path, 'utf8')
+        return JSON.parse(response)
+    } catch (e) {
+        console.log(e)
+        return false
     }
+}
+const updateFile = async (path, file) => {
+    console.log(4565)
+    console.log(file)
+    try {
+        await fs.promises.writeFile(path, JSON.stringify(file))
+        return true
+    } catch (e) {
+        console.log(e)
+        return false
+    }
+}
 
-    readFile(filePath)
+app.get('/api/allTodo', async (req, res) => {
+    try {
+        const response = await readFile(filePath)
+        response ?
+            res.status(200).json({message: 'Все элементы получены', data: response, isSuccess: true}) :
+            res.status(404).json({message: 'Список не поучен', isSuccess: false})
+    } catch (e) {
+        console.log(e)
+        res.status(404).json({message: 'Список не поучен', isSuccess: false})
+    }
 })
 app.get('/api/:id', async (req, res) => {
-    let filePath = path.join(__dirname, './src/mocks/', 'items.json')
-    const id = req.params.id
-
-    const readFile = async path => {
-        try {
-            return await fs.promises.readFile(path, 'utf8')
-        } catch (e) {
-            console.log(e)
-            res.status(404).json({message: 'Todo не получен', isSuccess: true})
+    try {
+        const id = req.params.id
+        const response = await readFile(filePath)
+        if (response) {
+            const item = response.find(item => item.id === id)
+            res.status(200).json({message: 'Todo успешно получен', data: item, isSuccess: true})
         }
+        else {
+            res.status(404).json({message: 'Todo успешно получен', isSuccess: false})
+        }
+    } catch (e) {
+        console.log(e)
+        res.status(404).json({message: 'Todo успешно получен', isSuccess: false})
     }
-
-    const items = await readFile(filePath)
-    const itemsJson = JSON.parse(items)
-    const item = itemsJson.find(item => item.id === id)
-    res.status(200).json({message: 'Todo успешно получен', data: item, isSuccess: true})
 })
 
 app.post('/api/create', async (req, res) => {
-    let filePath = path.join(__dirname, './src/mocks/', 'items.json')
-    const readFile = async path => {
-        try {
-            return await fs.promises.readFile(path, 'utf8')
-        } catch (e) {
-            console.log(e)
-            res.status(404).json({message: 'Новый список не добавлен', isSuccess: false})
+    try {
+        const response = await readFile(filePath)
+        if (response) {
+            response.push(req.body)
+            const updated = await updateFile(filePath, response)
+            updated ?
+                res.status(201).json({message: 'Todo создан', isSuccess: true}) :
+                res.status(404).json({message: 'Todo не создан', isSuccess: false})
+        } else {
+            res.status(404).json({message: 'Todo не создан', isSuccess: false})
         }
+    } catch (e) {
+        console.log(e)
+        res.status(404).json({message: 'Todo не создан', isSuccess: false})
     }
-    const writeFile = async (path, items) => {
-        try {
-            await fs.promises.writeFile(path, JSON.stringify(items))
-            res.status(201).json({message: 'Новый список добавлен', isSuccess: true})
-        } catch (e) {
-            console.log(e)
-            res.status(404).json({message: 'Новый список не добавлен', isSuccess: false})
-        }
-    }
-    const items = await readFile(filePath)
-    const itemsIson = JSON.parse(items)
-    itemsIson.push(req.body)
-    await writeFile(filePath, itemsIson)
 })
 
-// eslint-disable-next-line no-unused-vars
-app.delete('/api/delete/:id', async (req, res) => {
-    console.log(req)
-
-    let filePath = path.join(__dirname, './src/mocks/', 'items.json')
-    const readFile = async path => {
-        try {
-            return await fs.promises.readFile(path, 'utf8')
-        } catch (e) {
-            console.log(e)
-            res.status(404).json({message: 'Новый список не удален', isSuccess: false})
+app.patch('/api/:id', async (req, res) => {
+    try {
+        const response = await readFile(filePath)
+        if (response) {
+            const newItem = req.body
+            const itemId = response.findIndex(item => item.id === newItem.id)
+            response.splice(itemId, 1, newItem)
+            const updated = await updateFile(filePath, response)
+            updated ?
+                res.status(200).json({message: 'Список обновлен', isSuccess: true}) :
+                res.status(404).json({message: 'Список не обновлен', isSuccess: false})
+        } else {
+            res.status(404).json({message: 'Список не обновлен', isSuccess: false})
         }
+    } catch (e) {
+        console.log(e)
+        res.status(404).json({message: 'Список не обновлен', isSuccess: false})
     }
-    const writeFile = async (path, items) => {
-        try {
-            await fs.promises.writeFile(path, JSON.stringify(items))
-            res.status(201).json({message: 'Новый список удален', isSuccess: true})
-        } catch (e) {
-            console.log(e)
-            res.status(404).json({message: 'Новый список не удален', isSuccess: false})
+})
+app.delete('/api/:id', async (req, res) => {
+    try {
+        const response = await readFile(filePath)
+        if (response) {
+            let updatedFile = response.filter(item => item.id !== req.params.id)
+            const updated = await updateFile(filePath, updatedFile)
+            updated ?
+                res.status(200).json({message: 'Список удален', isSuccess: true}) :
+                res.status(404).json({message: 'Список не удален', isSuccess: false})
         }
+        else {
+            res.status(404).json({message: 'Список не удален', isSuccess: false})
+        }
+    } catch (e) {
+        console.log(e)
+        res.status(404).json({message: 'Список не удален', isSuccess: false})
     }
-    const items = await readFile(filePath)
-    const itemsIson = JSON.parse(items)
-    let del = itemsIson.filter(item => item.id !== req.params.id)
-    await writeFile(filePath, del)
 })
 
 

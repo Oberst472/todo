@@ -21,9 +21,9 @@ export default new VueRouter({
                 },
                 {
                     path: '/create',
-                    name: 'createTodo',
+                    name: 'create',
                     components: {
-                        default: require('./pages/addNewTodo').default
+                        default: require('./pages/detailed').default
                     },
                     meta: {
                         title: `Новый список`
@@ -31,9 +31,9 @@ export default new VueRouter({
                 },
                 {
                     path: '/edit/:id',
-                    name: 'editTodo',
+                    name: 'edit',
                     components: {
-                        default: require('./pages/editTodo').default
+                        default: require('./pages/detailed').default
                     },
                     meta: {
                         title: `Редактировать заметку`

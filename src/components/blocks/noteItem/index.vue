@@ -8,6 +8,8 @@
             confirm="Точно удалить?"
             confirm-position="left"
             @click="$emit('delete')"
+            circle
+            icon="trash"
         >
             Удалить
         </UiBtn>

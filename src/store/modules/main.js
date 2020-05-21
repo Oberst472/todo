@@ -24,7 +24,6 @@ export default {
     actions: {
         //получить все тудушки
         async stGetAllTodo({ commit }) {
-            console.log(66)
             commit('setIsLoading', true)
             try {
                 const data = await apiAllTodo()

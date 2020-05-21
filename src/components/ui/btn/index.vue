@@ -61,6 +61,10 @@
             circle: {
                 type: Boolean,
                 default: false
+            },
+            icon: {
+                type: String,
+                default: ''
             }
         },
         data() {
@@ -74,14 +78,16 @@
                     'ui-btn__item--disabled': this.disabled,
                     'ui-btn__item--loading': this.loading,
                     [`ui-btn__item--theme-${this.theme}`]: true,
-                    [`ui-btn__item--circle`]: this.circle
+                        [`ui-btn__item--circle`]: this.circle,
+                        [`ui-btn--icon-${this.icon}`]: this.icon
                 }
             },
             btnClasses() {
                 return {
                     'ui-btn--confirm-active': this.isConfirmActive,
                     [`ui-btn--confirm-position-${this.confirmPosition}`]: true,
-                    [`ui-btn--size-${this.size}`]: true
+                    [`ui-btn--size-${this.size}`]: true,
+                    [`ui-btn--circle`]: this.circle
                 }
             },
             tag() {
@@ -277,6 +283,17 @@
                         border: 3px solid currentColor;
                     }
                 }
+                &.ui-btn--circle {
+                    height: 50px;
+                    width: 50px;
+                    font-size: 0;
+                    padding: 0;
+                    min-width: 10px;
+                    border-radius: 50%;
+                    .ui-btn__item {
+                        border-radius: 50%;
+                    }
+                }
             }
 
             &-medium {
@@ -321,6 +338,16 @@
                         width: 2px;
                         height: 2px;
                         border: 2px solid currentColor;
+                    }
+                }
+                &.ui-btn--circle {
+                    height: 35px;
+                    width: 35px;
+                    font-size: 0;
+                    padding: 0;
+                    min-width: 10px;
+                    .ui-btn__item {
+                        border-radius: 50%;
                     }
                 }
             }
@@ -392,6 +419,21 @@
                         transform: translateX(-50%) rotate(45deg);
                     }
                 }
+            }
+        }
+
+        &--icon {
+            &-plus {
+                background-image: url('./assets/images/plus.svg');
+                background-size: 40%;
+                background-repeat: no-repeat;
+                background-position: center;
+            }
+            &-trash {
+                background-image: url('./assets/images/trash.svg');
+                background-size: 40%;
+                background-repeat: no-repeat;
+                background-position: center;
             }
         }
     }

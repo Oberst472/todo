@@ -4,12 +4,16 @@
             <div class="section-header__content">
                 <h1 class="section-header__title">{{ $route.meta.title }}</h1>
                 <div class="section-header__options" v-if="$route.name === 'main'">
-                    <UiBtn class="section-header__btn" theme="positive" size="medium" :to="{name: 'createTodo'}">Создать новый список</UiBtn>
+                    <UiBtn class="section-header__btn" theme="positive" size="medium" :to="{name: 'create'}">Создать новый список</UiBtn>
                 </div>
 
-                <div class="section-header__options" v-if="$route.name === 'createTodo'">
-                    <UiBtn class="section-header__btn" theme="positive" size="medium" @click="stCreateEmptyNote">Создать новую заметку</UiBtn>
-                    <UiBtn class="section-header__btn" theme="positive" size="medium" @click="saveTodo" :loading="isLoading">Сохранить</UiBtn>
+                <div class="section-header__options" v-if="$route.name === 'create'">
+                    <UiBtn class="section-header__btn" theme="positive" size="medium" @click="saveTodo" :loading="saveLoading">Сохранить</UiBtn>
+                </div>
+
+                <div class="section-header__options" v-if="$route.name === 'edit'">
+                    <UiBtn class="section-header__btn" theme="negative" size="medium" @click="removeTodo" :loading="removeLoading">Удалить заметку</UiBtn>
+                    <UiBtn class="section-header__btn" theme="positive" size="medium" @click="editTodo" :loading="editLoading">Сохранить изменения</UiBtn>
                 </div>
             </div>
         </div>
@@ -20,16 +24,38 @@
     import {mapState, mapActions} from 'vuex'
 export default {
         computed: {
-            ...mapState('todo', ['isLoading'])
+            ...mapState('todo', ['saveLoading', 'removeLoading', 'editLoading'])
         },
         methods: {
-            ...mapActions('todo', ['stCreateEmptyNote', 'save']),
+            ...mapActions('todo', ['stCreateEmptyNote', 'save', 'remove', 'edit']),
             ...mapActions('message', ['message']),
             async saveTodo() {
                 const data = await this.save()
                 if (data) {
 
                     this.message(['positive', 'Новый Todo добавлен'])
+                    this.$router.push({name: 'main'})
+                }
+                else {
+                    this.message(['negative', 'Ошибка, попробуйте еще раз'])
+                }
+            },
+            async editTodo() {
+                const id = this.$route.params.id
+                const data = await this.edit(id)
+                if (data) {
+                    this.message(['positive', 'Todo отредактирован'])
+                    this.$router.push({name: 'main'})
+                }
+                else {
+                    this.message(['negative', 'Ошибка, попробуйте еще раз'])
+                }
+            },
+            async removeTodo() {
+                const id = this.$route.params.id
+                const response = await this.remove(id)
+                if (response) {
+                    this.message(['positive', 'Заметка удалена'])
                     this.$router.push({name: 'main'})
                 }
                 else {
