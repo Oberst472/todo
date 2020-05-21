@@ -4,10 +4,10 @@
             <div class="section-header__content">
                 <h1 class="section-header__title">{{ $route.meta.title }}</h1>
                 <div class="section-header__options" v-if="$route.name === 'main'">
-                    <UiBtn class="section-header__btn" theme="positive" size="medium" :to="{name: 'addNewTodo'}">Создать новый список</UiBtn>
+                    <UiBtn class="section-header__btn" theme="positive" size="medium" :to="{name: 'createTodo'}">Создать новый список</UiBtn>
                 </div>
 
-                <div class="section-header__options" v-if="$route.name === 'addNewTodo'">
+                <div class="section-header__options" v-if="$route.name === 'createTodo'">
                     <UiBtn class="section-header__btn" theme="positive" size="medium" @click="stCreateEmptyNote">Создать новую заметку</UiBtn>
                     <UiBtn class="section-header__btn" theme="positive" size="medium" @click="saveTodo" :loading="isLoading">Сохранить</UiBtn>
                 </div>
@@ -20,10 +20,10 @@
     import {mapState, mapActions} from 'vuex'
 export default {
         computed: {
-            ...mapState('addNewTodo', ['isLoading'])
+            ...mapState('todo', ['isLoading'])
         },
         methods: {
-            ...mapActions('addNewTodo', ['stCreateEmptyNote', 'save']),
+            ...mapActions('todo', ['stCreateEmptyNote', 'save']),
             ...mapActions('message', ['message']),
             async saveTodo() {
                 const data = await this.save()

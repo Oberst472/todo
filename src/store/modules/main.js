@@ -16,7 +16,9 @@ export default {
     },
     getters: {
         getItems(state) {
-            return state.items.reverse()
+            return state.items ?
+            state.items.reverse() :
+            []
         }
     },
     actions: {

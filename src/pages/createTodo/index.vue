@@ -32,10 +32,10 @@
             }
         },
         computed: {
-            ...mapState('addNewTodo', ['items'])
+            ...mapState('todo', ['items'])
         },
         methods: {
-            ...mapActions('addNewTodo', ['stRemoveNote', 'stAddInfoToNote', 'stAddTitle'])
+            ...mapActions('todo', ['stRemoveNote', 'stAddInfoToNote', 'stAddTitle'])
         },
         watch: {
             title(val) {

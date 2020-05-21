@@ -30,6 +30,24 @@ app.get('/api/allTodo', (req, res) => {
 
     readFile(filePath)
 })
+app.get('/api/:id', async (req, res) => {
+    let filePath = path.join(__dirname, './src/mocks/', 'items.json')
+    const id = req.params.id
+
+    const readFile = async path => {
+        try {
+            return await fs.promises.readFile(path, 'utf8')
+        } catch (e) {
+            console.log(e)
+            res.status(404).json({message: 'Todo не получен', isSuccess: true})
+        }
+    }
+
+    const items = await readFile(filePath)
+    const itemsJson = JSON.parse(items)
+    const item = itemsJson.find(item => item.id === id)
+    res.status(200).json({message: 'Todo успешно получен', data: item, isSuccess: true})
+})
 
 app.post('/api/create', async (req, res) => {
     let filePath = path.join(__dirname, './src/mocks/', 'items.json')

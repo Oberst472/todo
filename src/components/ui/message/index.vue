@@ -43,7 +43,7 @@ export default {
     .ui-message {
         position: fixed;
         right: 0;
-        top: 0;
+        bottom: 0;
         width: 300px;
         height: 100vh;
         z-index: 50;
@@ -53,6 +53,8 @@ export default {
         &__items {
             display: flex;
             flex-direction: column;
+            height: 100%;
+            justify-content: flex-start;
         }
 
         &__item {

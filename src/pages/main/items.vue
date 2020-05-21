@@ -1,10 +1,10 @@
 <template>
-    <ul class="section-items">
+    <ul class="section-items" v-if="items.length">
         <li :key="item.id" class="section-items__item" v-for="(item, index) in items">
             <div class="section-items__item-header">
                 <span class="section-items__item-count">{{ index + 1 }}</span>
                 <h2 class="section-items__item-title">{{ item.title }}</h2>
-                <UiBtn class="section-items__item-btn" theme="info" size="small">Редактировать</UiBtn>
+                <UiBtn class="section-items__item-btn" theme="info" size="small" :to="{name: 'editTodo', params: {id: item.id, info: item}}">Редактировать</UiBtn>
                 <UiBtn class="section-items__item-btn" theme="negative" size="small" confirm="Вы уверены?" confirm-position="left" @click="$emit('removeTodo', item.id)">Удалить</UiBtn>
             </div>
 
@@ -123,5 +123,17 @@
                 background-image: linear-gradient(to top, $color--primary, transparent);
             }
         }
+    }
+    .list-complete-enter, .list-complete-leave-to
+        /* .list-complete-leave-active до версии 2.1.8 */ {
+        opacity: 0;
+        transform: translateY(30px);
+        transition-duration: 10s;
+        /deep/ .ui-btn__confirm {
+            opacity: 0;
+        }
+    }
+    .list-complete-leave-active {
+        position: absolute;
     }
 </style>

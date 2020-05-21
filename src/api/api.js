@@ -7,19 +7,24 @@ function timeout(ms) {
 }
 
 export const apiAllTodo = async function() {
-    await timeout(2000)
+    // await timeout(300)
     const [data] = await Promise.all([customFetch('get', `${baseUrl}/allTodo/`, null)])
     return data
 }
 
 export const apiCreateTodo = async function(info) {
-    await timeout(2000)
+    await timeout(300)
     const [data] = await Promise.all([customFetch('post', `${baseUrl}/create/`, info)])
     return data
 }
 
 export const apiDeleteTodo = async function(id) {
-    await timeout(2000)
+    await timeout(300)
     const [data] = await Promise.all([customFetch('delete', `${baseUrl}/delete/${id}`, null)])
+    return data
+}
+export const stApiGetTodoById = async function(id) {
+    await timeout(300)
+    const [data] = await Promise.all([customFetch('get', `${baseUrl}/${id}`, null)])
     return data
 }

@@ -20,13 +20,23 @@ export default new VueRouter({
                     }
                 },
                 {
-                    path: '/add',
-                    name: 'addNewTodo',
+                    path: '/create',
+                    name: 'createTodo',
                     components: {
                         default: require('./pages/addNewTodo').default
                     },
                     meta: {
                         title: `Новый список`
+                    }
+                },
+                {
+                    path: '/edit/:id',
+                    name: 'editTodo',
+                    components: {
+                        default: require('./pages/editTodo').default
+                    },
+                    meta: {
+                        title: `Редактировать заметку`
                     }
                 }
             ]
