@@ -1,20 +1,14 @@
-export default async function(method = 'GET', url, body, token = '') {
+export default async function(method = 'GET', url, body) {
     try {
         if (method.toUpperCase() === 'GET') {
             const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    Authorization: token
-                }
+                method: 'GET'
             })
             const data = await response.json()
             return !response.ok || response.status > 300 || !data['isSuccess'] ? false : data
         } else if (method.toUpperCase() === 'DELETE') {
             const response = await fetch(url, {
-                method: 'DELETE',
-                headers: {
-                    Authorization: token
-                }
+                method: 'DELETE'
             })
             const data = await response.json()
             return !response.ok || response.status > 300 || !data['isSuccess'] ? false : data
@@ -22,8 +16,7 @@ export default async function(method = 'GET', url, body, token = '') {
             const response = await fetch(url, {
                 method: method.toUpperCase(),
                 headers: {
-                    'Content-Type': 'application/json;charset=utf-8',
-                    Authorization: token
+                    'Content-Type': 'application/json;charset=utf-8'
                 },
                 body: JSON.stringify(body)
             })

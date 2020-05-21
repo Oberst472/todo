@@ -9,7 +9,7 @@
 
                 <div class="section-header__options" v-if="$route.name === 'addNewTodo'">
                     <UiBtn class="section-header__btn" theme="positive" size="medium" @click="stCreateEmptyNote">Создать новую заметку</UiBtn>
-                    <UiBtn class="section-header__btn" theme="positive" size="medium" :to="{name: 'addNewTodo'}">Сохранить</UiBtn>
+                    <UiBtn class="section-header__btn" theme="positive" size="medium" @click="save">Сохранить</UiBtn>
                 </div>
             </div>
         </div>
@@ -20,7 +20,7 @@
     import {mapActions} from 'vuex'
 export default {
         methods: {
-            ...mapActions('addNewTodo', ['stCreateEmptyNote'])
+            ...mapActions('addNewTodo', ['stCreateEmptyNote', 'save'])
         }
 }
 </script>
