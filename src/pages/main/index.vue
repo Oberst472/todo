@@ -2,7 +2,7 @@
     <div class="view-main page">
         <header class="page__header">
             <SectionHeader>
-                <UiBtn class="section-header__btn" theme="positive" size="medium" :to="{name: 'create'}">Создать новый список</UiBtn>
+                <UiBtn class="section-header__btn" theme="positive" size="medium" :to="{name: 'create'}">Создать</UiBtn>
             </SectionHeader>
         </header>
         <main class="page__body">

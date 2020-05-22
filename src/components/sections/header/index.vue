@@ -1,75 +1,17 @@
 <template>
-    <section class="section-header">
+    <section class="section-header" :class="`section-header-${$route.name}`">
         <div class="wrap">
             <div class="section-header__content">
                 <UiBtn @click="$router.push({name: 'main'})" circle size="small" theme="accent" icon="home" v-if="$route.name !== 'main'" title="На главную">Назад</UiBtn>
                 <h1 class="section-header__title">{{ $route.meta.title }}</h1>
                 <div class="section-header__options"><slot/></div>
-                <!--                <div class="section-header__options" v-if="$route.name === 'main'">-->
-                <!--                    <UiBtn class="section-header__btn" theme="positive" size="medium" :to="{name: 'create'}">Создать новый список</UiBtn>-->
-                <!--                </div>-->
-
-                <!--                <div class="section-header__options" v-if="$route.name === 'create'">-->
-                <!--                    <UiBtn class="section-header__btn" theme="positive" size="medium" @click="saveTodo" :loading="saveLoading" :disabled="!title.length">Сохранить</UiBtn>-->
-                <!--                </div>-->
-
-                <!--                <div class="section-header__options" v-if="$route.name === 'edit'">-->
-                <!--                    <UiBtn class="section-header__btn" theme="negative" size="medium" @click="removeTodo" :loading="removeLoading">Удалить заметку</UiBtn>-->
-                <!--                    <UiBtn class="section-header__btn" theme="positive" size="medium" @click="togglePageDisabled(false)" :loading="editLoading" v-if="pageDisabled">Отредактировать</UiBtn>-->
-                <!--                    <div class="section-header__options-btns" v-else>-->
-                <!--                        <UiBtn class="section-header__btn" theme="positive" size="medium" @click="stGetTodoById($route.params.id)" :loading="editLoading" :disabled="!title.length">Удалить изменения</UiBtn>-->
-                <!--                        <UiBtn class="section-header__btn" theme="positive" size="medium" @click="editTodo" :loading="editLoading" :disabled="!title.length">Сохранить</UiBtn>-->
-                <!--                    </div>-->
-                <!--                </div>-->
             </div>
         </div>
     </section>
 </template>
 
 <script>
-    import {mapState, mapActions} from 'vuex'
-export default {
-        computed: {
-            ...mapState('todo', ['title', 'saveLoading', 'removeLoading', 'editLoading', 'pageDisabled'])
-        },
-        methods: {
-            ...mapActions('todo', ['stCreateEmptyNote', 'save', 'remove', 'edit', 'togglePageDisabled', 'stGetTodoById']),
-            ...mapActions('message', ['message']),
-            async saveTodo() {
-                const data = await this.save()
-                if (data) {
-
-                    this.message(['positive', 'Новый Todo добавлен'])
-                    this.$router.push({name: 'main'})
-                }
-                else {
-                    this.message(['negative', 'Ошибка, попробуйте еще раз'])
-                }
-            },
-            async editTodo() {
-                const id = this.$route.params.id
-                const data = await this.edit(id)
-                if (data) {
-                    this.message(['positive', 'Todo отредактирован'])
-                    this.$router.push({name: 'main'})
-                }
-                else {
-                    this.message(['negative', 'Ошибка, попробуйте еще раз'])
-                }
-            },
-            async removeTodo() {
-                const id = this.$route.params.id
-                const response = await this.remove(id)
-                if (response) {
-                    this.message(['positive', 'Заметка удалена'])
-                    this.$router.push({name: 'main'})
-                }
-                else {
-                    this.message(['negative', 'Ошибка, попробуйте еще раз'])
-                }
-            }
-        }
-}
+export default {}
 </script>
 
 <style lang="scss" scoped>
@@ -81,6 +23,7 @@ export default {
             margin-left: $gutter / 2;
         }
         &__content {
+            padding: $gutter / 2 0;
             display: flex;
             align-items: center;
             @include md() {
@@ -92,11 +35,33 @@ export default {
             margin-left: auto;
             display: flex;
             & > * {
-                margin-left: $gutter / 2;
-            }
-            &-btns {
-                .section-header__btn:last-child {
+                @include md() {
                     margin-left: $gutter / 2;
+                }
+            }
+        }
+        &-edit {
+            .section-header__content {
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+            .section-header__options {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                margin-top: $gutter / 3;
+                @include md() {
+                    width: auto;
+                    margin-top: 0;
+                }
+            }
+            .section-header__btn {
+                font-size: 10px;
+                @include sm() {
+                    font-size: 12px;
+                }
+                @include md() {
+                    margin: 0 0 0 $gutter / 3;
                 }
             }
         }

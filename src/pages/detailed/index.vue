@@ -6,13 +6,11 @@
                     <UiBtn class="section-header__btn" theme="positive" size="medium" @click="saveTodo('create')" :loading="saveLoading" :disabled="!info.title.length">Сохранить</UiBtn>
                 </template>
 
-                <template class="section-header__options" v-if="$route.name === 'edit'">
-                    <UiBtn class="section-header__btn" theme="negative" size="medium" @click="removeTodo" :loading="removeLoading">Удалить заметку</UiBtn>
-                    <UiBtn class="section-header__btn" theme="positive" size="medium" @click="togglePageDisabled(false)" :loading="editLoading" v-if="pageDisabled">Отредактировать</UiBtn>
-                    <div class="section-header__options-btns" v-else>
-                        <UiBtn class="section-header__btn" theme="positive" size="medium" @click="getTodoById" :loading="editLoading" :disabled="!info.title.length" confirm="Удалить изменения?" confirm-position="bottom">Удалить изменения</UiBtn>
-                        <UiBtn class="section-header__btn" theme="positive" size="medium" @click="saveTodo('edit')" :loading="editLoading" :disabled="!info.title.length">Сохранить</UiBtn>
-                    </div>
+                <template v-if="$route.name === 'edit'">
+                    <UiBtn class="section-header__btn" theme="negative" size="medium" @click="removeTodo" :loading="removeLoading">Удалить</UiBtn>
+                    <UiBtn class="section-header__btn" theme="positive" size="medium" @click="togglePageDisabled(false)" :loading="editLoading" v-if="pageDisabled">Редактировать</UiBtn>
+                    <UiBtn class="section-header__btn" theme="positive" size="medium" @click="getTodoById" :loading="editLoading" :disabled="!info.title.length" confirm="Удалить внесенные изменения?" confirm-position="bottom" v-if="!pageDisabled">Отменить</UiBtn>
+                    <UiBtn class="section-header__btn" theme="positive" size="medium" @click="saveTodo('edit')" :loading="editLoading" :disabled="!info.title.length" v-if="!pageDisabled">Сохранить</UiBtn>
                 </template>
             </SectionHeader>
         </header>

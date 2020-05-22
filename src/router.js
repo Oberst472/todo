@@ -26,7 +26,7 @@ export default new VueRouter({
                         default: require('./pages/detailed').default
                     },
                     meta: {
-                        title: `Новый список`
+                        title: `Создать`
                     }
                 },
                 {
@@ -36,7 +36,7 @@ export default new VueRouter({
                         default: require('./pages/detailed').default
                     },
                     meta: {
-                        title: `Редактировать заметку`
+                        title: `Редактировать`
                     }
                 }
             ]
