@@ -17,10 +17,5 @@ export function media(breakpointName, _direction) {
     const windowWidth = window.innerWidth
     const breakpointConfig = BREAKPOINTS[breakpointName]
     const direction = _direction ? _direction : breakpointConfig.direction
-
     return direction === 'max' ? windowWidth <= breakpointConfig.value : windowWidth > breakpointConfig.value
 }
-
-// window.addEventListener('resize', () => {
-//     console.log('l', media('l', 'min'))
-// })

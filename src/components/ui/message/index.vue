@@ -11,78 +11,91 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-export default {
-  data() {
-    return {
-      timeout: ''
+    import {mapActions, mapState} from 'vuex'
+
+    export default {
+        data() {
+            return {
+                timeout: ''
+            }
+        },
+        computed: {
+            ...mapState('message', ['items'])
+        },
+        methods: {
+            ...mapActions('message', ['deleteMessage'])
+        },
+        watch: {
+            items(val) {
+                if (val.length) {
+                    clearTimeout(this.timeout);
+                    this.timeout = setTimeout(() => {
+                        this.deleteMessage()
+                    }, 1500)
+                } else {
+                    clearTimeout(this.timeout)
+                }
+            }
+        }
     }
-  },
-  computed: {
-    ...mapState('message', ['items'])
-  },
-  methods: {
-    ...mapActions('message', ['deleteMessage'])
-  },
-  watch: {
-    items(val) {
-      if (val.length) {
-        clearTimeout(this.timeout)
-        this.timeout = setTimeout(() => {
-          this.deleteMessage()
-        }, 2000)
-      } else {
-        clearTimeout(this.timeout)
-      }
-    }
-  }
-}
 </script>
 
 <style scoped lang="scss">
     .ui-message {
         position: fixed;
-        right: 0;
         bottom: 0;
+        left: 0;
+        z-index: 50;
         width: 300px;
         height: 100vh;
-        z-index: 50;
         overflow: hidden;
         pointer-events: none;
 
         &__items {
             display: flex;
+            justify-content: flex-end;
             flex-direction: column;
             height: 100%;
-            justify-content: flex-start;
         }
 
         &__item {
-            margin-bottom: $gutter / 2;
-            width: 100%;
-            padding: $gutter;
+            box-sizing: border-box;
             display: inline-flex;
             justify-content: center;
+            width: 100%;
+            min-height: 10px;
+            margin-top: $gutter / 3;
+            padding: $gutter / 3;
+
+            font-size: 12px;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
             text-align: center;
-            min-height: 80px;
-            box-sizing: border-box;
-            border-top-left-radius: 5px;
-            border-bottom-left-radius: 5px;
+            @include md() {
+                min-height: 80px;
+                margin-top: $gutter / 2;
+                padding: $gutter;
+                font-size: 14px;
+            }
+
             &--positive {
                 background-color: $color--positive;
                 color: $color--text-light
             }
+
             &--negative {
                 background-color: $color--negative;
                 color: $color--text-light
             }
         }
+
         .list-enter-active, .list-leave-active {
             transition: all 1s ease;
         }
+
         .list-enter, .list-leave-to {
             opacity: 0;
-            transform: translateX(150px);
+            transform: translateX(-150px);
         }
     }
 </style>

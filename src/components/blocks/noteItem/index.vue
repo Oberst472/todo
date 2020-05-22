@@ -57,6 +57,9 @@
             info: {
                 handler(val) {
                     this.$emit('input', val)
+                    if (!val.value.length) {
+                        this.info.isChecked = false
+                    }
                 },
                 deep: true
             }
@@ -72,16 +75,20 @@
     .block-note-item {
         display: flex;
         align-items: center;
-        background-color: $color--primary;
-        border-radius: $gutter / 3;
         padding: $gutter / 3;
+        border-radius: $gutter / 3;
+        background-color: $color--primary;
         transition-duration: 0.3s;
+        @include adaptiveFont(12px, 15px)
+
         &--checked {
             background-color: rgba($color--positive, 0.3);
+
             /deep/ .ui-input__inp {
                 text-decoration: line-through;
             }
         }
+
         & > * {
             flex-shrink: 0;
         }

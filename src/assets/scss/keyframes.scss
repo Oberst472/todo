@@ -1,0 +1,12 @@
+.fade-enter-active, .fade-leave-active {
+    @include md() {
+        transition: opacity 0.3s;
+    }
+}
+
+.fade-enter, .fade-leave-to {
+    display: none;
+    @include md() {
+        opacity: 0;
+    }
+}

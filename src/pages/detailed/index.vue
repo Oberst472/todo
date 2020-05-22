@@ -1,16 +1,26 @@
 <template>
-    <div class="page-todo-item page" :class="{'page-todo-item--disabled': pageDisabled && $route.name === 'edit'}">
+    <div :class="[{'page-todo-item--disabled': pageDisabled && $route.name === 'edit'}, {'page-todo-item--loading': isLoading}]" class="page-todo-item page">
         <header class="page__header">
             <SectionHeader>
                 <template v-if="$route.name === 'create'">
-                    <UiBtn class="section-header__btn" theme="positive" size="medium" @click="saveTodo('create')" :loading="saveLoading" :disabled="!info.title.length">Сохранить</UiBtn>
+                    <UiBtn :disabled="!info.title.length" :loading="saveLoading" @click="saveTodo('create')" class="section-header__btn" size="medium" theme="positive">
+                        Сохранить
+                    </UiBtn>
                 </template>
 
                 <template v-if="$route.name === 'edit'">
-                    <UiBtn class="section-header__btn" theme="negative" size="medium" @click="removeTodo" :loading="removeLoading">Удалить</UiBtn>
-                    <UiBtn class="section-header__btn" theme="positive" size="medium" @click="togglePageDisabled(false)" :loading="editLoading" v-if="pageDisabled">Редактировать</UiBtn>
-                    <UiBtn class="section-header__btn" theme="positive" size="medium" @click="getTodoById" :loading="editLoading" :disabled="!info.title.length" confirm="Удалить внесенные изменения?" confirm-position="bottom" v-if="!pageDisabled">Отменить</UiBtn>
-                    <UiBtn class="section-header__btn" theme="positive" size="medium" @click="saveTodo('edit')" :loading="editLoading" :disabled="!info.title.length" v-if="!pageDisabled">Сохранить</UiBtn>
+                    <UiBtn :confirm-position="isDesktop ? 'bottom' : 'right'" :loading="removeLoading" @click="removeTodo" class="section-header__btn" confirm="Удалить список?" size="medium" theme="negative">
+                        Удалить
+                    </UiBtn>
+                    <UiBtn :loading="editLoading" @click="togglePageDisabled(false)" class="section-header__btn" size="medium" theme="positive" v-if="pageDisabled">
+                        Редактировать
+                    </UiBtn>
+                    <UiBtn :disabled="!info.title.length" :loading="editLoading" @click="getTodoById" class="section-header__btn" confirm="Удалить внесенные изменения?" confirm-position="bottom" size="medium" theme="positive" v-if="!pageDisabled">
+                        Отменить
+                    </UiBtn>
+                    <UiBtn :disabled="!info.title.length" :loading="editLoading" @click="saveTodo('edit')" class="section-header__btn" size="medium" theme="positive" v-if="!pageDisabled">
+                        Сохранить
+                    </UiBtn>
                 </template>
             </SectionHeader>
         </header>
@@ -18,7 +28,7 @@
             <div class="wrap">
                 <div class="page-todo-item__content">
                     <div class="page-todo-item__title">
-                        <UiInput class="page-todo-item__title-inp" v-model="info.title"/>
+                        <UiInput class="page-todo-item__title-inp" placeholder="Введите название списка" v-model="info.title"/>
                     </div>
                     <transition-group appear name="list-complete" tag="ul" class="page-todo-item__list" v-if="info.items.length">
                         <li class="page-todo-item__list-item" v-for="(item, index) in info.items" :key="item.id">
@@ -38,11 +48,13 @@
                 </div>
             </div>
         </main>
+        <span class="page-todo-item-loading" v-if="isLoading && $route.name === 'edit'"><span></span></span>
     </div>
 </template>
 
 <script>
     import {randomString} from '@/utils/randomString'
+    import {media} from '@/utils/media'
     import {mapActions, mapState} from 'vuex'
     import SectionHeader from '@/components/sections/header'
     import BlockNoteItem from '@/components/blocks/noteItem';
@@ -54,6 +66,8 @@
         },
         data() {
             return {
+                isLoading: true,
+                isDesktop: false,
                 info: {
                     title: '',
                     items: []
@@ -64,7 +78,7 @@
             ...mapState('todo', ['items', 'pageDisabled', 'saveLoading', 'editLoading', 'removeLoading'])
         },
         methods: {
-            ...mapActions('todo', ['stRemoveNote', 'stAddInfoToNote', 'stAddTitle', 'stGetTodoById', 'stCreateEmptyNote', 'togglePageDisabled', 'stSave', 'stEdit', 'stRemove']),
+            ...mapActions('todo', ['stGetTodoById', 'togglePageDisabled', 'stSave', 'stEdit', 'stRemove']),
             ...mapActions('message', ['message']),
             createEmptyNote() {
                 const items = this.info.items
@@ -88,30 +102,30 @@
                     this.info.id = randomString(14)
                     const data = await this.stSave(this.info)
                     if (data) {
-                        this.message(['positive', 'Новый Todo добавлен'])
+                        this.message(['positive', 'Новый список добавлен']);
                         this.$router.push({name: 'main'})
-                    }
-                    else {
+                    } else {
                         this.message(['negative', 'Ошибка, попробуйте еще раз'])
                     }
-                }
-                else {
+                } else {
                     console.log(this.info)
                     const data = await this.stEdit(this.info)
                     if (data) {
-                        this.message(['positive', 'Новый Todo добавлен'])
+                        this.message(['positive', 'Список обновлен']);
                         this.$router.push({name: 'main'})
-                    }
-                    else {
+                    } else {
                         this.message(['negative', 'Ошибка, попробуйте еще раз'])
                     }
                 }
             },
             async getTodoById() {
+                this.isLoading = true;
                 const id = this.$route.params.id
                 if (id) {
+                    this.info.items = [];
                     const response = await this.stGetTodoById(id)
                     this.info = response
+                    this.isLoading = false
                 }
             },
             async removeTodo() {
@@ -120,18 +134,16 @@
                 if (response) {
                     this.message(['positive', 'Todo удален'])
                     this.$router.push({name: 'main'})
-                }
-                else {
+                } else {
                     this.message(['negative', 'Ошибка, попробуйте еще раз'])
                 }
             }
         },
-        watch: {
-            // title(val) {
-            //     this.stAddTitle(val)
-            // }
-        },
         async mounted() {
+            this.isDesktop = media('md', 'min');
+            window.onresize = () => {
+                this.isDesktop = media('md', 'min')
+            };
             this.togglePageDisabled(true)
             await this.getTodoById()
         }
@@ -141,22 +153,73 @@
 <style scoped lang="scss">
     .page-todo-item {
         position: relative;
+
         &--disabled {
             &:before {
                 content: '';
                 position: fixed;
-                left: 0;
                 top: 0;
+                left: 0;
+                z-index: 9;
                 width: 100%;
                 height: 100%;
                 background-color: rgba($color--base, 0.6);
-                z-index: 9;
             }
         }
+
+        .page-todo-item-loading {
+            pointer-events: none;
+        }
+
+        &--loading {
+            .page-todo-item-loading {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 9;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: 100%;
+                background-color: rgba($color--base, 1);
+                pointer-events: none;
+
+                span {
+                    position: relative;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 60px;
+                    height: 60px;
+                    border: 2px solid transparent;
+                    border-top-color: currentColor;
+                    border-bottom-color: currentColor;
+                    border-radius: 50%;
+                    animation: spin 1.5s linear infinite;
+                    pointer-events: none;
+
+                    &:before {
+                        content: '';
+                        display: block;
+                        width: 10px;
+                        height: 10px;
+                        border: 2px solid currentColor;
+                        border-radius: 50%;
+                        animation: pulse 1s alternate ease-in-out infinite;
+                    }
+                }
+            }
+        }
+
         &__title {
-            padding: $gutter 0 $gutter * 2 0;
             display: flex;
             justify-content: center;
+            padding: 0 0 $gutter 0;
+            @include md() {
+                padding: $gutter 0 $gutter * 2 0;
+            }
 
             &-inp {
                 border-bottom: 1px solid rgba($color--text-light, 0.1);
@@ -187,7 +250,6 @@
         }
 
         .list-complete-enter, .list-complete-leave-to
-            /* .list-complete-leave-active до версии 2.1.8 */
         {
             opacity: 0;
             transform: translateY(30px);

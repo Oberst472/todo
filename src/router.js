@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+
 Vue.use(VueRouter)
 
 export default new VueRouter({
@@ -16,7 +17,7 @@ export default new VueRouter({
                         default: require('./pages/main').default
                     },
                     meta: {
-                        title: `Все списки дел`
+                        title: `Все списки`
                     }
                 },
                 {

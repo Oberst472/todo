@@ -4,14 +4,18 @@
             <div class="section-items__item-header">
                 <span class="section-items__item-count">{{ index + 1 }}</span>
                 <h2 class="section-items__item-title">{{ item.title }}</h2>
-                <UiBtn class="section-items__item-btn" theme="info" size="small" :to="{name: 'edit', params: {id: item.id, info: item}}" circle icon="edit" title="Редактировать">Редактировать</UiBtn>
-                <UiBtn class="section-items__item-btn" theme="negative" size="small" confirm="Вы уверены?" confirm-position="left" circle icon="trash" @click="$emit('removeTodo', item.id)" title="Удалить">Удалить</UiBtn>
+                <UiBtn :to="{name: 'edit', params: {id: item.id, info: item}}" circle class="section-items__item-btn" icon="edit" size="small" theme="info" title="Редактировать">
+                    Редактировать
+                </UiBtn>
+                <UiBtn @click="$emit('removeTodo', item.id)" circle class="section-items__item-btn" confirm="Вы уверены?" confirm-position="left" icon="trash" size="small" theme="negative" title="Удалить">
+                    Удалить
+                </UiBtn>
             </div>
 
             <ul class="section-items__item-short" v-if="item.items.length">
                 <li class="section-items__item-short-item" v-for="(item, index) in item.items" :key="index">
                     <UiCheckbox class="section-items__item-short-checkbox" v-model="item.isChecked"/>
-                    {{ item.value }}
+                    <span>{{ item.value || 'Пустая заметка' }}</span>
                 </li>
             </ul>
             <div class="section-items__item-text" v-else>В этой заметке ничего нет :(</div>
@@ -22,8 +26,7 @@
 
 <script>
     export default {
-        components: {
-        },
+        components: {},
         props: {
             items: {
                 type: Array,
@@ -40,11 +43,11 @@
 
         &__item {
             position: relative;
+            min-height: 130px;
             padding: $gutter / 3;
             border-radius: $gutter / 3;
             background-color: $color--primary;
             overflow: hidden;
-            min-height: 130px;
             @include md() {
                 padding: $gutter / 2;
             }
@@ -80,10 +83,14 @@
             }
 
             &-title {
+                @include adaptiveFont(14px, 18px)
                 margin-right: auto;
+                padding-left: $gutter;
+                text-align: left;
             }
 
             &-btn {
+                flex-shrink: 0;
                 margin-left: $gutter / 2;
             }
 
@@ -91,20 +98,26 @@
             &-short {
                 @include listReset;
                 display: flex;
-                flex-direction: column;
                 align-items: flex-start;
+                flex-direction: column;
 
                 &-item {
+                    @include adaptiveFont(12px, 14px);
                     display: flex;
+                    align-items: flex-end;
                     margin-bottom: $gutter / 6;
-                    &:nth-of-type(3n) {
+                    line-height: 1;
+
+                    &:nth-of-type(4n) {
                         display: none;
                     }
                 }
+
                 &-checkbox {
                     margin-right: 10px;
                 }
             }
+
             &-text {
                 text-align: left;
             }
@@ -125,15 +138,19 @@
             }
         }
     }
+
     .list-complete-enter, .list-complete-leave-to
-        /* .list-complete-leave-active до версии 2.1.8 */ {
+        /* .list-complete-leave-active до версии 2.1.8 */
+    {
         opacity: 0;
-        transform: translateY(30px);
         transition-duration: 10s;
+        transform: translateY(30px);
+
         /deep/ .ui-btn__confirm {
             opacity: 0;
         }
     }
+
     .list-complete-leave-active {
         position: absolute;
     }

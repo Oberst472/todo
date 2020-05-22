@@ -23,11 +23,12 @@
 <style lang="scss" scoped>
     .ui-checkbox {
         position: relative;
-display: inline-flex;
+        display: inline-flex;
         width: 20px;
         height: 20px;
         border-radius: 3px;
         background-color: #fff;
+
         &__inp {
             display: none;
 
@@ -37,6 +38,7 @@ display: inline-flex;
                 }
             }
         }
+
         @include lg() {
             cursor: pointer;
         }

@@ -1,8 +1,5 @@
 <template>
     <div class="layout-main">
-        <!--        <header class="layout-main__header">-->
-        <!--            <SectionHeader/>-->
-        <!--        </header>-->
         <router-view/>
     </div>
 </template>

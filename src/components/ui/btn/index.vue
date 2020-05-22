@@ -221,6 +221,7 @@
 
         &__confirm {
             position: absolute;
+            z-index: 4;
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
@@ -466,10 +467,15 @@
     }
 
     .fade-enter-active, .fade-leave-active {
-        transition: opacity 0.3s;
+        @include md() {
+            transition: opacity 0.3s;
+        }
     }
 
     .fade-enter, .fade-leave-to {
-        opacity: 0;
+        display: none;
+        @include md() {
+            opacity: 0;
+        }
     }
 </style>
