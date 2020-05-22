@@ -78,8 +78,9 @@
                     'ui-btn__item--disabled': this.disabled,
                     'ui-btn__item--loading': this.loading,
                     [`ui-btn__item--theme-${this.theme}`]: true,
-                        [`ui-btn__item--circle`]: this.circle,
-                        [`ui-btn--icon-${this.icon}`]: this.icon
+                    [`ui-btn__item--circle`]: this.circle,
+                    [`ui-btn--icon-${this.icon}`]: this.icon,
+                    [`ui-btn--icon`]: this.icon
                 }
             },
             btnClasses() {
@@ -149,6 +150,14 @@
 
                     &:hover {
                         background-color: darken($color--info, 20%);
+                    }
+                }
+                &-accent {
+                    color: $color--text-light;
+                    background-color: $color--accent;
+
+                    &:hover {
+                        background-color: darken($color--accent, 20%);
                     }
                 }
 
@@ -423,17 +432,20 @@
         }
 
         &--icon {
+            background-size: 40%;
+            background-repeat: no-repeat;
+            background-position: center;
             &-plus {
                 background-image: url('./assets/images/plus.svg');
-                background-size: 40%;
-                background-repeat: no-repeat;
-                background-position: center;
             }
             &-trash {
                 background-image: url('./assets/images/trash.svg');
-                background-size: 40%;
-                background-repeat: no-repeat;
-                background-position: center;
+            }
+            &-edit {
+                background-image: url('./assets/images/edit.svg');
+            }
+            &-home {
+                background-image: url('./assets/images/home.svg');
             }
         }
     }

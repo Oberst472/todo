@@ -4,8 +4,8 @@
             <div class="section-items__item-header">
                 <span class="section-items__item-count">{{ index + 1 }}</span>
                 <h2 class="section-items__item-title">{{ item.title }}</h2>
-                <UiBtn class="section-items__item-btn" theme="info" size="small" :to="{name: 'edit', params: {id: item.id, info: item}}">Редактировать</UiBtn>
-                <UiBtn class="section-items__item-btn" theme="negative" size="small" confirm="Вы уверены?" confirm-position="left" @click="$emit('removeTodo', item.id)">Удалить</UiBtn>
+                <UiBtn class="section-items__item-btn" theme="info" size="small" :to="{name: 'edit', params: {id: item.id, info: item}}" circle icon="edit" title="Редактировать">Редактировать</UiBtn>
+                <UiBtn class="section-items__item-btn" theme="negative" size="small" confirm="Вы уверены?" confirm-position="left" circle icon="trash" @click="$emit('removeTodo', item.id)" title="Удалить">Удалить</UiBtn>
             </div>
 
             <ul class="section-items__item-short" v-if="item.items.length">

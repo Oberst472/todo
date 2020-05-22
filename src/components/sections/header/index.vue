@@ -2,18 +2,19 @@
     <section class="section-header">
         <div class="wrap">
             <div class="section-header__content">
+                <UiBtn @click="$router.push({name: 'main'})" circle size="small" theme="accent" icon="home" v-if="$route.name !== 'main'" title="На главную">Назад</UiBtn>
                 <h1 class="section-header__title">{{ $route.meta.title }}</h1>
                 <div class="section-header__options" v-if="$route.name === 'main'">
                     <UiBtn class="section-header__btn" theme="positive" size="medium" :to="{name: 'create'}">Создать новый список</UiBtn>
                 </div>
 
                 <div class="section-header__options" v-if="$route.name === 'create'">
-                    <UiBtn class="section-header__btn" theme="positive" size="medium" @click="saveTodo" :loading="saveLoading">Сохранить</UiBtn>
+                    <UiBtn class="section-header__btn" theme="positive" size="medium" @click="saveTodo" :loading="saveLoading" :disabled="!title.length">Сохранить</UiBtn>
                 </div>
 
                 <div class="section-header__options" v-if="$route.name === 'edit'">
                     <UiBtn class="section-header__btn" theme="negative" size="medium" @click="removeTodo" :loading="removeLoading">Удалить заметку</UiBtn>
-                    <UiBtn class="section-header__btn" theme="positive" size="medium" @click="editTodo" :loading="editLoading">Сохранить изменения</UiBtn>
+                    <UiBtn class="section-header__btn" theme="positive" size="medium" @click="editTodo" :loading="editLoading" :disabled="!title.length">Сохранить изменения</UiBtn>
                 </div>
             </div>
         </div>
@@ -24,7 +25,7 @@
     import {mapState, mapActions} from 'vuex'
 export default {
         computed: {
-            ...mapState('todo', ['saveLoading', 'removeLoading', 'editLoading'])
+            ...mapState('todo', ['title', 'saveLoading', 'removeLoading', 'editLoading'])
         },
         methods: {
             ...mapActions('todo', ['stCreateEmptyNote', 'save', 'remove', 'edit']),
@@ -72,15 +73,18 @@ export default {
         &__title {
             @include adaptiveFont(15px, 33px);
             margin: 0;
+            margin-left: $gutter / 2;
         }
         &__content {
             display: flex;
+            align-items: center;
             @include md() {
                 padding: $gutter / 2 0;
                 justify-content: space-between;
             }
         }
         &__options {
+            margin-left: auto;
             & > * {
                 margin-left: $gutter / 2;
             }

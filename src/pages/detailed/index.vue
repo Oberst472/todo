@@ -5,7 +5,7 @@
                 <div class="page-todo-item__title">
                     <UiInput class="page-todo-item__title-inp" v-model="title"/>
                 </div>
-                <transition-group name="list-complete" tag="ul" class="page-todo-item__list" v-if="items.length">
+                <transition-group appear name="list-complete" tag="ul" class="page-todo-item__list" v-if="items.length">
                     <li class="page-todo-item__list-item" v-for="(item, index) in items" :key="item.id">
                         <BlockNoteItem
                             checkbox
