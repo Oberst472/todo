@@ -41,7 +41,7 @@
                             />
                         </li>
                     </transition-group>
-                    <div v-else>Заметок нет :(</div>
+                    <div class="page-todo-item__mock-text" v-else>Нет заметок :(</div>
                     <UiBtn class="page-todo-item__add-btn" @click="createEmptyNote" circle theme="positive" icon="plus">
                         Добавить
                     </UiBtn>
@@ -194,6 +194,10 @@
                 width: 100%;
                 box-sizing: border-box;
                 transition-duration: 1s;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
             }
         }
 
@@ -203,8 +207,14 @@
             bottom: $gutter
         }
 
-        .list-complete-enter, .list-complete-leave-to
-        {
+        &__mock-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .list-complete-enter, .list-complete-leave-to {
             opacity: 0;
             transform: translateY(30px);
             transition-duration: 0.3s;

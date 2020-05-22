@@ -21,7 +21,7 @@
             <div class="section-items__item-text" v-else>В этой заметке ничего нет :(</div>
         </li>
     </ul>
-    <div v-else>Нет списков =(</div>
+    <div class="section-items__mock-text" v-else>Нет списков =(</div>
 </template>
 
 <script>
@@ -47,7 +47,6 @@
             padding: $gutter / 3;
             border-radius: $gutter / 3;
             background-color: $color--primary;
-            overflow: hidden;
             @include md() {
                 padding: $gutter / 2;
             }
@@ -134,8 +133,16 @@
                 width: 100%;
                 height: 70%;
                 z-index: 2;
+                border-bottom-left-radius: $gutter / 3;
+                border-bottom-right-radius: $gutter / 3;
                 background-image: linear-gradient(to top, $color--primary, transparent);
             }
+        }
+        &__mock-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
     }
 
