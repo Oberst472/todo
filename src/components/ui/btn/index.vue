@@ -152,6 +152,7 @@
                         background-color: darken($color--info, 20%);
                     }
                 }
+
                 &-accent {
                     color: $color--text-light;
                     background-color: $color--accent;
@@ -189,6 +190,7 @@
                 .ui-btn__item-value {
                     opacity: 0;
                 }
+
                 opacity: 0.7;
                 pointer-events: none;
             }
@@ -229,9 +231,9 @@
             min-width: 150px;
             padding: $gutter / 2;
             font-size: 14px;
-            color: $color--base;
+            color: $color--text-light;
             border-radius: 5px;
-            background-color: lighten($color--text-light, 10%);
+            background-color: $color--info;
 
 
             &-text {
@@ -247,14 +249,14 @@
                 width: 45%;
                 padding: 5px;
                 border-radius: 5px;
-                background-color: $color--positive;
+                background-color: $color--text-light;
                 cursor: pointer;
                 user-select: none;
                 transition: background-color 0.3s ease;
-                color: $color--text-light;
+                color: $color--base;
 
                 &:hover {
-                    background-color: darken($color--positive, 15%);
+                    background-color: darken($color--text-light, 20%);
                 }
 
                 &:active {
@@ -267,7 +269,7 @@
                 position: absolute;
                 width: 10px;
                 height: 10px;
-                background-color: lighten($color--text-light, 10%);
+                background-color: $color--info;
             }
         }
 
@@ -293,6 +295,7 @@
                         border: 3px solid currentColor;
                     }
                 }
+
                 &.ui-btn--circle {
                     height: 50px;
                     width: 50px;
@@ -300,6 +303,7 @@
                     padding: 0;
                     min-width: 10px;
                     border-radius: 50%;
+
                     .ui-btn__item {
                         border-radius: 50%;
                     }
@@ -350,12 +354,14 @@
                         border: 2px solid currentColor;
                     }
                 }
+
                 &.ui-btn--circle {
                     height: 35px;
                     width: 35px;
                     font-size: 0;
                     padding: 0;
                     min-width: 10px;
+
                     .ui-btn__item {
                         border-radius: 50%;
                     }
@@ -369,6 +375,7 @@
         &--confirm {
             &-active {
                 z-index: 3;
+
                 .ui-btn__item {
                     opacity: 0.6 !important;
                     pointer-events: none !important;
@@ -436,15 +443,19 @@
             background-size: 40%;
             background-repeat: no-repeat;
             background-position: center;
+
             &-plus {
                 background-image: url('./assets/images/plus.svg');
             }
+
             &-trash {
                 background-image: url('./assets/images/trash.svg');
             }
+
             &-edit {
                 background-image: url('./assets/images/edit.svg');
             }
+
             &-home {
                 background-image: url('./assets/images/home.svg');
             }

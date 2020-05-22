@@ -1,5 +1,5 @@
 <template>
-    <div :class="[{'page-todo-item--disabled': pageDisabled && $route.name === 'edit'}, {'page-todo-item--loading': isLoading}]" class="page-todo-item page">
+    <div :class="[{'page-todo-item--disabled': pageDisabled && $route.name === 'edit'}]" class="page-todo-item page">
         <header class="page__header">
             <SectionHeader>
                 <template v-if="$route.name === 'create'">
@@ -15,7 +15,7 @@
                     <UiBtn :loading="editLoading" @click="togglePageDisabled(false)" class="section-header__btn" size="medium" theme="positive" v-if="pageDisabled">
                         Редактировать
                     </UiBtn>
-                    <UiBtn :disabled="!info.title.length" :loading="editLoading" @click="getTodoById" class="section-header__btn" confirm="Удалить внесенные изменения?" confirm-position="bottom" size="medium" theme="positive" v-if="!pageDisabled">
+                    <UiBtn :disabled="!info.title.length" @click="getTodoById" class="section-header__btn" confirm="Удалить внесенные изменения?" confirm-position="bottom" size="medium" theme="positive" v-if="!pageDisabled">
                         Отменить
                     </UiBtn>
                     <UiBtn :disabled="!info.title.length" :loading="editLoading" @click="saveTodo('edit')" class="section-header__btn" size="medium" theme="positive" v-if="!pageDisabled">
@@ -48,7 +48,7 @@
                 </div>
             </div>
         </main>
-        <span class="page-todo-item-loading" v-if="isLoading && $route.name === 'edit'"><span></span></span>
+        <UiLoading v-if="isLoading && $route.name === 'edit'"/>
     </div>
 </template>
 
@@ -164,52 +164,6 @@
                 width: 100%;
                 height: 100%;
                 background-color: rgba($color--base, 0.6);
-            }
-        }
-
-        .page-todo-item-loading {
-            pointer-events: none;
-        }
-
-        &--loading {
-            .page-todo-item-loading {
-                content: '';
-                position: fixed;
-                top: 0;
-                left: 0;
-                z-index: 9;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                width: 100%;
-                height: 100%;
-                background-color: rgba($color--base, 1);
-                pointer-events: none;
-
-                span {
-                    position: relative;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    width: 60px;
-                    height: 60px;
-                    border: 2px solid transparent;
-                    border-top-color: currentColor;
-                    border-bottom-color: currentColor;
-                    border-radius: 50%;
-                    animation: spin 1.5s linear infinite;
-                    pointer-events: none;
-
-                    &:before {
-                        content: '';
-                        display: block;
-                        width: 10px;
-                        height: 10px;
-                        border: 2px solid currentColor;
-                        border-radius: 50%;
-                        animation: pulse 1s alternate ease-in-out infinite;
-                    }
-                }
             }
         }
 

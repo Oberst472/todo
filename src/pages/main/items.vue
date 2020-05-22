@@ -108,7 +108,7 @@
                     margin-bottom: $gutter / 6;
                     line-height: 1;
 
-                    &:nth-of-type(4n) {
+                    &:nth-of-type(n + 4) {
                         display: none;
                     }
                 }
@@ -140,12 +140,10 @@
     }
 
     .list-complete-enter, .list-complete-leave-to
-        /* .list-complete-leave-active до версии 2.1.8 */
     {
         opacity: 0;
         transition-duration: 10s;
         transform: translateY(30px);
-
         /deep/ .ui-btn__confirm {
             opacity: 0;
         }

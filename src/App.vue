@@ -28,7 +28,6 @@ export default {
         }
         &__body {
             padding: $gutter 0;
-            min-height: 100%;
             background-color: $color--base;
         }
     }

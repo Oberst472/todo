@@ -7,6 +7,7 @@ export default {
         isLoading: false,
         removeLoading: false,
         saveLoading: false,
+        editLoading: false,
         getAllLoading: false,
         getByIdLoading: false,
         pageDisabled: true
@@ -16,6 +17,9 @@ export default {
             switch (payload[0]) {
                 case 'save':
                     state.saveLoading = payload[1]
+                    break
+                case 'edit':
+                    state.editLoading = payload[1]
                     break
                 case 'remove':
                     state.removeLoading = payload[1]
