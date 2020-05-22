@@ -19,4 +19,17 @@ export default {
         width: 100%;
         height: 100%;
     }
+    .page {
+        width: 100%;
+        &__header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        &__body {
+            padding: $gutter 0;
+            min-height: 100%;
+            background-color: $color--base;
+        }
+    }
 </style>

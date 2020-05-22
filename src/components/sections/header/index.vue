@@ -4,22 +4,23 @@
             <div class="section-header__content">
                 <UiBtn @click="$router.push({name: 'main'})" circle size="small" theme="accent" icon="home" v-if="$route.name !== 'main'" title="На главную">Назад</UiBtn>
                 <h1 class="section-header__title">{{ $route.meta.title }}</h1>
-                <div class="section-header__options" v-if="$route.name === 'main'">
-                    <UiBtn class="section-header__btn" theme="positive" size="medium" :to="{name: 'create'}">Создать новый список</UiBtn>
-                </div>
+                <div class="section-header__options"><slot/></div>
+                <!--                <div class="section-header__options" v-if="$route.name === 'main'">-->
+                <!--                    <UiBtn class="section-header__btn" theme="positive" size="medium" :to="{name: 'create'}">Создать новый список</UiBtn>-->
+                <!--                </div>-->
 
-                <div class="section-header__options" v-if="$route.name === 'create'">
-                    <UiBtn class="section-header__btn" theme="positive" size="medium" @click="saveTodo" :loading="saveLoading" :disabled="!title.length">Сохранить</UiBtn>
-                </div>
+                <!--                <div class="section-header__options" v-if="$route.name === 'create'">-->
+                <!--                    <UiBtn class="section-header__btn" theme="positive" size="medium" @click="saveTodo" :loading="saveLoading" :disabled="!title.length">Сохранить</UiBtn>-->
+                <!--                </div>-->
 
-                <div class="section-header__options" v-if="$route.name === 'edit'">
-                    <UiBtn class="section-header__btn" theme="negative" size="medium" @click="removeTodo" :loading="removeLoading">Удалить заметку</UiBtn>
-                    <UiBtn class="section-header__btn" theme="positive" size="medium" @click="togglePageDisabled(false)" :loading="editLoading" v-if="pageDisabled">Отредактировать</UiBtn>
-                    <div class="section-header__options-btns" v-else>
-                        <UiBtn class="section-header__btn" theme="positive" size="medium" @click="stGetTodoById($route.params.id)" :loading="editLoading" :disabled="!title.length">Удалить изменения</UiBtn>
-                        <UiBtn class="section-header__btn" theme="positive" size="medium" @click="editTodo" :loading="editLoading" :disabled="!title.length">Сохранить</UiBtn>
-                    </div>
-                </div>
+                <!--                <div class="section-header__options" v-if="$route.name === 'edit'">-->
+                <!--                    <UiBtn class="section-header__btn" theme="negative" size="medium" @click="removeTodo" :loading="removeLoading">Удалить заметку</UiBtn>-->
+                <!--                    <UiBtn class="section-header__btn" theme="positive" size="medium" @click="togglePageDisabled(false)" :loading="editLoading" v-if="pageDisabled">Отредактировать</UiBtn>-->
+                <!--                    <div class="section-header__options-btns" v-else>-->
+                <!--                        <UiBtn class="section-header__btn" theme="positive" size="medium" @click="stGetTodoById($route.params.id)" :loading="editLoading" :disabled="!title.length">Удалить изменения</UiBtn>-->
+                <!--                        <UiBtn class="section-header__btn" theme="positive" size="medium" @click="editTodo" :loading="editLoading" :disabled="!title.length">Сохранить</UiBtn>-->
+                <!--                    </div>-->
+                <!--                </div>-->
             </div>
         </div>
     </section>
