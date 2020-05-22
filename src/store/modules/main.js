@@ -27,7 +27,6 @@ export default {
             commit('setIsLoading', true)
             try {
                 const data = await apiAllTodo()
-                console.log(data.data)
                 commit('setIsLoading', false)
                 commit('setItems', data.data)
                 return !!data

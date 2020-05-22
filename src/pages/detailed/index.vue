@@ -108,7 +108,6 @@
                         this.message(['negative', 'Ошибка, попробуйте еще раз'])
                     }
                 } else {
-                    console.log(this.info)
                     const data = await this.stEdit(this.info)
                     if (data) {
                         this.message(['positive', 'Список обновлен']);

@@ -7,7 +7,6 @@ export default async function(method = 'GET', url, body) {
             const data = await response.json()
             return !response.ok || response.status > 300 || !data['isSuccess'] ? false : data
         } else if (method.toUpperCase() === 'DELETE') {
-            console.log(66)
             const response = await fetch(url, {
                 method: 'DELETE'
             })
