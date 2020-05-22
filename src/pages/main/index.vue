@@ -26,10 +26,10 @@
         },
         methods: {
             ...mapActions('main', ['stGetAllTodo']),
-            ...mapActions('todo', ['remove']),
+            ...mapActions('todo', ['stRemove']),
             ...mapActions('message', ['message']),
             async removeTodo(id) {
-                const response = await this.remove(id)
+                const response = await this.stRemove(id)
                 response ?
                     this.message(['positive', 'Todo удален']) :
                     this.message(['negative', 'Ошибка, попробуйте еще раз'])

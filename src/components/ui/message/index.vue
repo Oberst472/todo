@@ -30,7 +30,7 @@ export default {
         clearTimeout(this.timeout)
         this.timeout = setTimeout(() => {
           this.deleteMessage()
-        }, 3000)
+        }, 2000)
       } else {
         clearTimeout(this.timeout)
       }

@@ -17,6 +17,7 @@
             <div class="section-items__item-text" v-else>В этой заметке ничего нет :(</div>
         </li>
     </ul>
+    <div v-else>Нет списков =(</div>
 </template>
 
 <script>

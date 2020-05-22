@@ -3,38 +3,38 @@
         <header class="page__header">
             <SectionHeader>
                 <template v-if="$route.name === 'create'">
-                    <UiBtn class="section-header__btn" theme="positive" size="medium" @click="saveTodo" :loading="saveLoading" :disabled="!title.length">Сохранить</UiBtn>
+                    <UiBtn class="section-header__btn" theme="positive" size="medium" @click="saveTodo('create')" :loading="saveLoading" :disabled="!info.title.length">Сохранить</UiBtn>
                 </template>
 
-                <!--                <template class="section-header__options" v-if="$route.name === 'edit'">-->
-                <!--                    <UiBtn class="section-header__btn" theme="negative" size="medium" @click="removeTodo" :loading="removeLoading">Удалить заметку</UiBtn>-->
-                <!--                    <UiBtn class="section-header__btn" theme="positive" size="medium" @click="togglePageDisabled(false)" :loading="editLoading" v-if="pageDisabled">Отредактировать</UiBtn>-->
-                <!--                    <div class="section-header__options-btns" v-else>-->
-                <!--                        <UiBtn class="section-header__btn" theme="positive" size="medium" @click="stGetTodoById($route.params.id)" :loading="editLoading" :disabled="!title.length">Удалить изменения</UiBtn>-->
-                <!--                        <UiBtn class="section-header__btn" theme="positive" size="medium" @click="editTodo" :loading="editLoading" :disabled="!title.length">Сохранить</UiBtn>-->
-                <!--                    </div>-->
-                <!--                </template>-->
+                <template class="section-header__options" v-if="$route.name === 'edit'">
+                    <UiBtn class="section-header__btn" theme="negative" size="medium" @click="removeTodo" :loading="removeLoading">Удалить заметку</UiBtn>
+                    <UiBtn class="section-header__btn" theme="positive" size="medium" @click="togglePageDisabled(false)" :loading="editLoading" v-if="pageDisabled">Отредактировать</UiBtn>
+                    <div class="section-header__options-btns" v-else>
+                        <UiBtn class="section-header__btn" theme="positive" size="medium" @click="getTodoById" :loading="editLoading" :disabled="!info.title.length" confirm="Удалить изменения?" confirm-position="bottom">Удалить изменения</UiBtn>
+                        <UiBtn class="section-header__btn" theme="positive" size="medium" @click="saveTodo('edit')" :loading="editLoading" :disabled="!info.title.length">Сохранить</UiBtn>
+                    </div>
+                </template>
             </SectionHeader>
         </header>
         <main class="page__body">
             <div class="wrap">
                 <div class="page-todo-item__content">
                     <div class="page-todo-item__title">
-                        <UiInput class="page-todo-item__title-inp" v-model="title"/>
+                        <UiInput class="page-todo-item__title-inp" v-model="info.title"/>
                     </div>
-                    <transition-group appear name="list-complete" tag="ul" class="page-todo-item__list" v-if="items.length">
-                        <li class="page-todo-item__list-item" v-for="(item, index) in items" :key="item.id">
+                    <transition-group appear name="list-complete" tag="ul" class="page-todo-item__list" v-if="info.items.length">
+                        <li class="page-todo-item__list-item" v-for="(item, index) in info.items" :key="item.id">
                             <BlockNoteItem
                                 checkbox
-                                @input="stAddInfoToNote({index, info: $event})"
-                                @delete="stRemoveNote(index)"
+                                @input="addInfoToNote({index, info: $event})"
+                                @delete="removeNote(index)"
                                 :value="item.value"
                                 :checked="item.isChecked"
                             />
                         </li>
                     </transition-group>
                     <div v-else>Заметок нет :(</div>
-                    <UiBtn class="page-todo-item__add-btn" @click="stCreateEmptyNote" circle theme="positive" icon="plus">
+                    <UiBtn class="page-todo-item__add-btn" @click="createEmptyNote" circle theme="positive" icon="plus">
                         Добавить
                     </UiBtn>
                 </div>
@@ -44,6 +44,7 @@
 </template>
 
 <script>
+    import {randomString} from '@/utils/randomString'
     import {mapActions, mapState} from 'vuex'
     import SectionHeader from '@/components/sections/header'
     import BlockNoteItem from '@/components/blocks/noteItem';
@@ -55,20 +56,71 @@
         },
         data() {
             return {
-                title: ''
+                info: {
+                    title: '',
+                    items: []
+                }
             }
         },
         computed: {
-            ...mapState('todo', ['items', 'pageDisabled', 'saveLoading'])
+            ...mapState('todo', ['items', 'pageDisabled', 'saveLoading', 'editLoading', 'removeLoading'])
         },
         methods: {
-            ...mapActions('todo', ['stRemoveNote', 'stAddInfoToNote', 'stAddTitle', 'stGetTodoById', 'stCreateEmptyNote', 'togglePageDisabled', 'save']),
+            ...mapActions('todo', ['stRemoveNote', 'stAddInfoToNote', 'stAddTitle', 'stGetTodoById', 'stCreateEmptyNote', 'togglePageDisabled', 'stSave', 'stEdit', 'stRemove']),
             ...mapActions('message', ['message']),
-            async saveTodo() {
-                const data = await this.save()
-                if (data) {
-
-                    this.message(['positive', 'Новый Todo добавлен'])
+            createEmptyNote() {
+                const items = this.info.items
+                const newItem = {
+                    id: randomString(10),
+                    isChecked: false,
+                    value: ''
+                }
+                items.push(newItem)
+            },
+            addInfoToNote({index, info}) {
+                const items = this.info.items
+                info.id = items[index].id
+                items.splice(index, 1, info)
+            },
+            removeNote(index) {
+                this.info.items.splice(index, 1)
+            },
+            async saveTodo(payload) {
+                if (payload === 'create') {
+                    this.info.id = randomString(14)
+                    const data = await this.stSave(this.info)
+                    if (data) {
+                        this.message(['positive', 'Новый Todo добавлен'])
+                        this.$router.push({name: 'main'})
+                    }
+                    else {
+                        this.message(['negative', 'Ошибка, попробуйте еще раз'])
+                    }
+                }
+                else {
+                    console.log(this.info)
+                    const data = await this.stEdit(this.info)
+                    if (data) {
+                        this.message(['positive', 'Новый Todo добавлен'])
+                        this.$router.push({name: 'main'})
+                    }
+                    else {
+                        this.message(['negative', 'Ошибка, попробуйте еще раз'])
+                    }
+                }
+            },
+            async getTodoById() {
+                const id = this.$route.params.id
+                if (id) {
+                    const response = await this.stGetTodoById(id)
+                    this.info = response
+                }
+            },
+            async removeTodo() {
+                const id = this.$route.params.id
+                const response = await this.stRemove(id)
+                if (response) {
+                    this.message(['positive', 'Todo удален'])
                     this.$router.push({name: 'main'})
                 }
                 else {
@@ -77,17 +129,13 @@
             }
         },
         watch: {
-            title(val) {
-                this.stAddTitle(val)
-            }
+            // title(val) {
+            //     this.stAddTitle(val)
+            // }
         },
         async mounted() {
             this.togglePageDisabled(true)
-            const id = this.$route.params.id
-            if (id) {
-                const response = await this.stGetTodoById(id)
-                this.title = response.title
-            }
+            await this.getTodoById()
         }
     }
 </script>

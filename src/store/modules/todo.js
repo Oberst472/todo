@@ -43,9 +43,10 @@ export default {
         setItemsDecrement(state, index) {
             state.items.splice(index, 1)
         },
+        // eslint-disable-next-line no-unused-vars
         setAddInfoToNote(state, payload) {
-            payload.info.id = state.items[payload.index].id
-            state.items.splice(payload.index, 1, payload.info)
+            // payload.info.id = state.items[payload.index].id
+            // state.items.splice(payload.index, 1, payload.info)
         },
         setPageDisabled(state, payload) {
             state.pageDisabled = payload
@@ -79,27 +80,15 @@ export default {
             commit('setItemsDecrement', index)
         },
         //сохранить список
-        async save({state, commit, dispatch}) {
+        async stSave({commit, dispatch}, info) {
             commit('setIsLoading', ['save', true])
-            const info = {
-                id: randomString(10),
-                title: state.title,
-                items: state.items
-
-            }
             const data = await apiCreateTodo(info)
             dispatch('reset')
             commit('setIsLoading', ['save', false])
             return Boolean(data)
         },
-        async edit({state, commit, dispatch}, id) {
+        async stEdit({commit, dispatch}, info) {
             commit('setIsLoading', ['edit', true])
-            const info = {
-                id,
-                title: state.title,
-                items: state.items
-
-            }
             const data = await apiEditTodo(info)
             dispatch('reset')
             commit('setIsLoading', ['edit', false])
@@ -127,7 +116,7 @@ export default {
             }
         },
         //удалить список по id
-        async remove({commit, dispatch}, id) {
+        async stRemove({commit, dispatch}, id) {
             commit('setIsLoading', ['remove', true])
             try {
                 const data = await apiDeleteTodo(id)
@@ -140,7 +129,6 @@ export default {
             }
         },
         togglePageDisabled({commit}, payload) {
-            console.log(payload)
             commit('setPageDisabled', payload)
         },
         //обнулить стейт

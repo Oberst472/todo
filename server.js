@@ -26,8 +26,6 @@ const readFile = async path => {
     }
 }
 const updateFile = async (path, file) => {
-    console.log(4565)
-    console.log(file)
     try {
         await fs.promises.writeFile(path, JSON.stringify(file))
         return true
@@ -38,6 +36,7 @@ const updateFile = async (path, file) => {
 }
 
 app.get('/api/allTodo', async (req, res) => {
+    console.log('Запрос получен')
     try {
         const response = await readFile(filePath)
         response ?
