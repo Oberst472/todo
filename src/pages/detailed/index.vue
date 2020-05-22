@@ -1,5 +1,5 @@
 <template>
-    <div class="page-todo-item">
+    <div class="page-todo-item" :class="{'page-todo-item--disabled': pageDisabled}">
         <div class="wrap">
             <div class="page-todo-item__content">
                 <div class="page-todo-item__title">
@@ -16,6 +16,7 @@
                         />
                     </li>
                 </transition-group>
+                <div v-else>Заметок нет :(</div>
                 <UiBtn class="page-todo-item__add-btn" @click="stCreateEmptyNote" circle theme="positive" icon="plus">
                     Добавить
                 </UiBtn>
@@ -38,10 +39,10 @@
             }
         },
         computed: {
-            ...mapState('todo', ['items'])
+            ...mapState('todo', ['items', 'pageDisabled'])
         },
         methods: {
-            ...mapActions('todo', ['stRemoveNote', 'stAddInfoToNote', 'stAddTitle', 'stGetTodoById', 'stCreateEmptyNote'])
+            ...mapActions('todo', ['stRemoveNote', 'stAddInfoToNote', 'stAddTitle', 'stGetTodoById', 'stCreateEmptyNote', 'togglePageDisabled'])
         },
         watch: {
             title(val) {
@@ -49,6 +50,7 @@
             }
         },
         async mounted() {
+            this.togglePageDisabled(true)
             const id = this.$route.params.id
             if (id) {
                 const response = await this.stGetTodoById(id)
@@ -60,6 +62,19 @@
 
 <style scoped lang="scss">
     .page-todo-item {
+        position: relative;
+        &--disabled {
+            &:before {
+                content: '';
+                position: fixed;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba($color--base, 0.6);
+                z-index: 9;
+            }
+        }
         &__title {
             padding: $gutter 0 $gutter * 2 0;
             display: flex;

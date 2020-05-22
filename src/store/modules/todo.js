@@ -9,6 +9,7 @@ export default {
         saveLoading: false,
         getAllLoading: false,
         getByIdLoading: false,
+        pageDisabled: true,
         title: '',
         items: []
     },
@@ -45,6 +46,10 @@ export default {
         setAddInfoToNote(state, payload) {
             payload.info.id = state.items[payload.index].id
             state.items.splice(payload.index, 1, payload.info)
+        },
+        setPageDisabled(state, payload) {
+            state.pageDisabled = payload
+            console.log(state.pageDisabled)
         },
         resetState(state) {
             state.title = '';
@@ -101,8 +106,9 @@ export default {
             return Boolean(data)
         },
         //получить определенный список по id
-        async stGetTodoById({commit}, id) {
+        async stGetTodoById({commit, dispatch}, id) {
             commit('setIsLoading', ['getById', true])
+            dispatch('reset')
             try {
                 const data = await stApiGetTodoById(id)
                 if (data) {
@@ -132,6 +138,10 @@ export default {
                 commit('setIsLoading', ['remove', false])
                 console.log(e)
             }
+        },
+        togglePageDisabled({commit}, payload) {
+            console.log(payload)
+            commit('setPageDisabled', payload)
         },
         //обнулить стейт
         reset({commit}) {

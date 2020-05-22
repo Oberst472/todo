@@ -14,7 +14,11 @@
 
                 <div class="section-header__options" v-if="$route.name === 'edit'">
                     <UiBtn class="section-header__btn" theme="negative" size="medium" @click="removeTodo" :loading="removeLoading">Удалить заметку</UiBtn>
-                    <UiBtn class="section-header__btn" theme="positive" size="medium" @click="editTodo" :loading="editLoading" :disabled="!title.length">Сохранить изменения</UiBtn>
+                    <UiBtn class="section-header__btn" theme="positive" size="medium" @click="togglePageDisabled(false)" :loading="editLoading" v-if="pageDisabled">Отредактировать</UiBtn>
+                    <div class="section-header__options-btns" v-else>
+                        <UiBtn class="section-header__btn" theme="positive" size="medium" @click="stGetTodoById($route.params.id)" :loading="editLoading" :disabled="!title.length">Удалить изменения</UiBtn>
+                        <UiBtn class="section-header__btn" theme="positive" size="medium" @click="editTodo" :loading="editLoading" :disabled="!title.length">Сохранить</UiBtn>
+                    </div>
                 </div>
             </div>
         </div>
@@ -25,10 +29,10 @@
     import {mapState, mapActions} from 'vuex'
 export default {
         computed: {
-            ...mapState('todo', ['title', 'saveLoading', 'removeLoading', 'editLoading'])
+            ...mapState('todo', ['title', 'saveLoading', 'removeLoading', 'editLoading', 'pageDisabled'])
         },
         methods: {
-            ...mapActions('todo', ['stCreateEmptyNote', 'save', 'remove', 'edit']),
+            ...mapActions('todo', ['stCreateEmptyNote', 'save', 'remove', 'edit', 'togglePageDisabled', 'stGetTodoById']),
             ...mapActions('message', ['message']),
             async saveTodo() {
                 const data = await this.save()
@@ -71,7 +75,7 @@ export default {
     .section-header {
         background-color: darken($color--primary, 5%);
         &__title {
-            @include adaptiveFont(15px, 33px);
+            @include adaptiveFont(15px, 20px);
             margin: 0;
             margin-left: $gutter / 2;
         }
@@ -85,8 +89,14 @@ export default {
         }
         &__options {
             margin-left: auto;
+            display: flex;
             & > * {
                 margin-left: $gutter / 2;
+            }
+            &-btns {
+                .section-header__btn:last-child {
+                    margin-left: $gutter / 2;
+                }
             }
         }
     }
